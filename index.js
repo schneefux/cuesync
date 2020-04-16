@@ -17,6 +17,7 @@ async function loadLibrary(libraryPath) {
   })
 }
 
+// adapted from https://homepage.ruhr-uni-bochum.de/jan.holthuis/posts/reversing-seratos-geob-tags
 async function readSeratoCues(buffer) {
   // tag name
   const tagHeader = 'SERATO_MARKERS_V2=';
