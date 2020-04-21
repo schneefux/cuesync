@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "start": "ts-node index.ts",
+    "test": "jest"
+  },
   "author": "schneefux",
   "license": "UNLICENSED",
   "dependencies": {
@@ -13,7 +16,10 @@
     "taglib3": "^3.0.0"
   },
   "devDependencies": {
+    "@types/jest": "^25.2.1",
     "@types/node": "^13.13.1",
+    "jest": "^25.4.0",
+    "ts-jest": "^25.4.0",
     "ts-node": "^8.9.0",
     "typescript": "^3.8.3"
   }
