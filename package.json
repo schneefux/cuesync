@@ -7,7 +7,14 @@
   "author": "schneefux",
   "license": "UNLICENSED",
   "dependencies": {
+    "id3-rs": "^0.1.1",
     "seratojs": "^2.0.0",
-    "simple-plist": "^1.1.0"
+    "simple-plist": "^1.1.0",
+    "taglib3": "^3.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^13.13.1",
+    "ts-node": "^8.9.0",
+    "typescript": "^3.8.3"
   }
 }
