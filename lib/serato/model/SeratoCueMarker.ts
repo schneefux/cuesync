@@ -1,6 +1,9 @@
 import SeratoMarker from "./SeratoMarker"
 import Serializable from "./Serializable"
 
+/**
+ * https://support.serato.com/hc/en-us/articles/360000067696-Cue-Points
+ */
 export default class SeratoCueMarker implements SeratoMarker, Serializable {
   id = 'CUE'
   size = 13

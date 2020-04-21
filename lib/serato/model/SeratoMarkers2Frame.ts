@@ -1,7 +1,36 @@
 import GeobFrame from "./GeobFrame"
 import SeratoMarker from "./SeratoMarker"
-import { seratoMarkerFactory } from ".."
+import SeratoCueMarker from "./SeratoCueMarker"
+import SeratoBpmLockMarker from "./SeratoBpmLockMarker"
+import SeratoColorMarker from "./SeratoColorMarker"
 
+/**
+ * Deserialize buffer into Serato Marker.
+ */
+function seratoMarkerFactory(id: string, payload: Buffer): SeratoMarker|null {
+  let marker: SeratoMarker
+  switch (id) {
+    case 'CUE':
+      marker = new SeratoCueMarker()
+      marker.decode(payload)
+      break
+    case 'BPMLOCK':
+      marker = new SeratoBpmLockMarker()
+      marker.decode(payload)
+      break
+    case 'COLOR':
+      marker = new SeratoColorMarker()
+      marker.decode(payload)
+      break
+  }
+
+  return marker
+}
+
+/**
+ * 'Serato Markers2' tag, containing information about BPM lock, track color, cues, loops and flips.
+ * https://github.com/Holzhaus/serato-tags/blob/master/docs/serato_markers2.md
+ */
 export default class SeratoMarkers2Frame implements GeobFrame<SeratoMarker[]> {
   encoding = 0
   mimetype = 'application/octet-stream'
