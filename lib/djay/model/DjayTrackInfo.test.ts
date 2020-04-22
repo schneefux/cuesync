@@ -19,3 +19,15 @@ test.skip('should deserialize empty cues', () => {
   trackInfo.decode(testTrack.meta, { 'song.cuePoints': [ 0, 12.34, 0, 34.56, 0, 0, 0, 0 ] })
   expect(trackInfo.cues.length).toBe(4)
 })
+
+test('should serialize track info', () => {
+  const trackInfo = Object.assign(new DjayTrackInfo(), {
+    title: 'the conspiracy',
+    artists: [ 'albzzy', 'sk' ],
+    unknownNumber: 274,
+    cues: [ 42.797550201416016 ],
+    bpmOverride: undefined,
+    songStart: undefined
+  });
+  expect(trackInfo.encode()).toMatchObject(testTrack)
+})

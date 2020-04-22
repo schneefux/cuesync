@@ -17,4 +17,18 @@ export default class DjayTrackInfo {
     this.bpmOverride = information['song.manualBpm']
     this.songStart = information['song.songStart']
   }
+
+  encode() {
+    const meta = [this.title, this.artists.join(', '), this.unknownNumber].join('\t')
+    const information = {
+      'song.cuePoints': Array.from(Array(8)).map((e, index) => index < this.cues.length ? this.cues[index] : 0),
+    } as DjaySongEntry
+    if (this.bpmOverride !== undefined) {
+      information['song.manualBpm'] = this.bpmOverride
+    }
+    if (this.songStart !== undefined) {
+      information['song.songStart'] = this.songStart
+    }
+    return { meta, information }
+  }
 }
