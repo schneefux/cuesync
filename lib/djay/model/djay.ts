@@ -18,6 +18,6 @@ export interface DjaySongEntry {
  */
 export default interface DjayLibrary {
   'Song Entries'?: {
-    [meta: string]: DjaySongEntry
+    [key: string]: DjaySongEntry
   }
 }

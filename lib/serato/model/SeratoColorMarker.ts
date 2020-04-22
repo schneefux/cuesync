@@ -1,10 +1,9 @@
 import SeratoMarker from "./SeratoMarker"
-import Serializable from "./Serializable"
 
 /**
  * Describe a track's color.
  */
-export default class SeratoColorMarker implements SeratoMarker, Serializable {
+export default class SeratoColorMarker implements SeratoMarker {
   id = 'COLOR'
   size = 4
   color: string

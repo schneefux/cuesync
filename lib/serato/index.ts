@@ -1,7 +1,7 @@
 import { promisify } from "util"
 import * as taglib from 'taglib3'
-import { deserialize } from "./serializer"
 import readId3Tags from "../id3"
+import SeratoTrackSerializer from "./SeratoTrackSerializer"
 
 const readTags = promisify(taglib.readTags)
 
@@ -25,5 +25,6 @@ async function readGeobFrames(path) {
  */
 export async function readTrack(filename) {
   const frames = await readGeobFrames(filename)
-  return deserialize(frames)
+  const serializer = new SeratoTrackSerializer()
+  return serializer.deserialize(frames)
 }

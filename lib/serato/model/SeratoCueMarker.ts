@@ -1,10 +1,9 @@
 import SeratoMarker from "./SeratoMarker"
-import Serializable from "./Serializable"
 
 /**
  * https://support.serato.com/hc/en-us/articles/360000067696-Cue-Points
  */
-export default class SeratoCueMarker implements SeratoMarker, Serializable {
+export default class SeratoCueMarker implements SeratoMarker {
   id = 'CUE'
   size = 13
   index: number
@@ -27,9 +26,5 @@ export default class SeratoCueMarker implements SeratoMarker, Serializable {
     buf.writeUInt32BE(this.milliseconds, 2)
     Buffer.from(this.color.slice(1), 'hex').copy(buf, 7)
     return buf
-  }
-
-  public get seconds() {
-    return this.milliseconds / 1000
   }
 }

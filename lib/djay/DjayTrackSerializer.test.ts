@@ -1,11 +1,12 @@
-import { deserialize, serialize } from "./serializer"
 import TrackInfo from "../model/TrackInfo"
 import Cue from "../model/Cue"
+import DjayTrackSerializer from "./DjayTrackSerializer"
 
-const testTrack = { meta: 'the conspiracy\talbzzy, sk\t274', information: { 'song.cuePoints': [ 42.797550201416016, 0, 0, 0, 0, 0, 0, 0 ] } }
+const testTrack = { key: 'the conspiracy\talbzzy, sk\t274', value: { 'song.cuePoints': [ 42.797550201416016, 0, 0, 0, 0, 0, 0, 0 ] } }
+const serializer = new DjayTrackSerializer()
 
 test('should deserialize track info', () => {
-  const trackInfo = deserialize(testTrack.meta, testTrack.information)
+  const trackInfo = serializer.deserialize(testTrack)
   expect(trackInfo.artists[0]).toBe('albzzy')
   expect(trackInfo.artists[1]).toBe('sk')
   expect(trackInfo.title).toBe('the conspiracy')
@@ -17,7 +18,7 @@ test('should deserialize track info', () => {
 })
 
 test.skip('should deserialize empty cues', () => {
-  const trackInfo = deserialize(testTrack.meta, { 'song.cuePoints': [ 0, 12.34, 0, 34.56, 0, 0, 0, 0 ] })
+  const trackInfo = serializer.deserialize({ key: testTrack.key, value: { 'song.cuePoints': [ 0, 12.34, 0, 34.56, 0, 0, 0, 0 ] } })
   expect(trackInfo.cues.length).toBe(4)
 })
 
@@ -30,5 +31,5 @@ test('should serialize track info', () => {
     bpm: undefined,
     songStart: undefined
   } as TrackInfo
-  expect(serialize(trackInfo)).toMatchObject(testTrack)
+  expect(serializer.serialize(trackInfo)).toMatchObject(testTrack)
 })

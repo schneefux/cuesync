@@ -3,13 +3,14 @@ import * as plist from "simple-plist"
 import DjayLibrary from "./model/djay"
 import * as os from "os";
 import * as path from "path"
-import { deserialize } from "./serializer";
+import DjayTrackSerializer from "./DjayTrackSerializer";
 
 // djay stores cues
 async function loadLibrary(libraryPath) {
   const library = await promisify(plist.readFile)(libraryPath) as DjayLibrary
-  Object.entries(library['Song Entries']).forEach(([meta, information]) => {
-    const trackInfo = deserialize(meta, information)
+  const serializer = new DjayTrackSerializer()
+  Object.entries(library['Song Entries']).forEach(([key, value]) => {
+    const trackInfo = serializer.deserialize({ key, value })
     console.log(trackInfo)
   })
 }
