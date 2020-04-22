@@ -24,7 +24,7 @@ test('should serialize track info', () => {
   const trackInfo = Object.assign(new DjayTrackInfo(), {
     title: 'the conspiracy',
     artists: [ 'albzzy', 'sk' ],
-    unknownNumber: 274,
+    durationSeconds: 274,
     cues: [ 42.797550201416016 ],
     bpmOverride: undefined,
     songStart: undefined
