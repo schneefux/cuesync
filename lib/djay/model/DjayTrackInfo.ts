@@ -11,9 +11,9 @@ export default class DjayTrackInfo {
   decode(meta: string, information: DjaySongEntry) {
     const [title, artists, unknownNumber] = meta.split('\t')
     this.title = title
-    this.artists = artists.split(',')
+    this.artists = artists.split(', ')
     this.unknownNumber = parseInt(unknownNumber)
-    this.cues = information['song.cuePoints'] || []
+    this.cues = (information['song.cuePoints'] || []).filter(c => c != 0)
     this.bpmOverride = information['song.manualBpm']
     this.songStart = information['song.songStart']
   }

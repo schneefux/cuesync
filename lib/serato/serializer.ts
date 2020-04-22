@@ -4,7 +4,7 @@ import GeobFrame from "./model/GeobFrame"
 /**
  * Deserialize buffer into frames.
  */
-export function geobFrameFactory(buf: Buffer): SeratoMarkers2Frame|null {
+export function decodeFrame(buf: Buffer): SeratoMarkers2Frame|null {
   let rest = buf
   const encoding = rest.readInt8()
   rest = rest.slice(1)

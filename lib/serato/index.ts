@@ -2,7 +2,7 @@ import { promisify } from "util"
 import * as taglib from 'taglib3'
 import * as id3 from 'id3-rs'
 import SeratoMarker from "./model/SeratoMarker"
-import { geobFrameFactory } from "./serializer"
+import { decodeFrame } from "./serializer"
 
 const readId3Tags = promisify(id3.readTags)
 const readTags = promisify(taglib.readTags)
@@ -29,6 +29,6 @@ async function readSeratoMarkers2(path): Promise<Buffer> {
  */
 export async function readSeratoCues(filename): Promise<SeratoMarker[]> {
   const data = await readSeratoMarkers2(filename)
-  const frame = geobFrameFactory(data)
+  const frame = decodeFrame(data)
   return frame.data
 }
