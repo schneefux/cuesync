@@ -4,7 +4,7 @@ export default interface TrackInfo {
   title: string
   artists: string[]
   cues: Cue[]
-  bpm: number
-  durationSeconds: number
-  songStart: number
+  bpm?: number
+  durationSeconds?: number
+  songStart?: number
 }

@@ -25,8 +25,11 @@ export function deserialize(meta: string, information: DjaySongEntry) {
 
 export function serialize(trackInfo: TrackInfo) {
   const meta = [trackInfo.title, trackInfo.artists.join(', '), trackInfo.durationSeconds].join('\t')
+  const cueSecondsByIndex = trackInfo.cues.reduce((obj, cue) => ({ ...obj, [cue.index]: cue.milliseconds / 1000 }), {})
+  const cuePoints = Array.from(Array(8))
+    .map((e, index) => index in cueSecondsByIndex ? cueSecondsByIndex[index] : 0)
   const information = {
-    'song.cuePoints': Array.from(Array(8)).map((e, index) => index < this.cues.length ? this.cues[index] : 0),
+    'song.cuePoints': cuePoints,
   } as DjaySongEntry
   if (this.bpmOverride !== undefined) {
     information['song.manualBpm'] = this.bpmOverride
