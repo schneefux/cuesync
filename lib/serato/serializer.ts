@@ -1,5 +1,7 @@
 import SeratoMarkers2Frame from "./model/SeratoMarkers2Frame"
 import GeobFrame from "./model/GeobFrame"
+import TrackInfo from "../model/TrackInfo"
+import SeratoCueMarker from "./model/SeratoCueMarker"
 
 /**
  * Deserialize buffer into frames.
@@ -41,4 +43,28 @@ export function encodeFrame<T>(frame: GeobFrame<T>): Buffer {
   cursor += frame.id.length + 1
   frame.encode().copy(buf, cursor)
   return buf
+}
+
+/**
+ * Deserialize frames into TrackInfo.
+ */
+export function deserialize(bufs: Buffer[]) {
+  const trackInfo = {} as TrackInfo
+
+  const frames = bufs
+    .map(buf => decodeFrame(buf))
+    .filter(frame => frame !== null)
+
+  const markers2 = frames.filter(f => f instanceof SeratoMarkers2Frame)[0]
+  if (markers2) {
+    trackInfo.cues = markers2.data
+      .filter(d => d instanceof SeratoCueMarker)
+      .map((cueMarker: SeratoCueMarker) => ({
+        index: cueMarker.index,
+        color: cueMarker.color,
+        milliseconds: cueMarker.milliseconds,
+      }))
+  }
+
+  return trackInfo
 }
