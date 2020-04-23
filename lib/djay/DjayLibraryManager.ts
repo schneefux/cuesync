@@ -20,8 +20,8 @@ export default class DjayLibraryManager implements LibraryManager {
   }
 
   async find(trackInfoStub: TrackInfo) {
-    const trackInfo = this.tracks.find(t => fuzzyTrackInfoEqual(t, trackInfoStub))
-    return mergeTrackInfo(trackInfoStub, trackInfo)
+    // TODO is it possible to read paths for local files?
+    return this.tracks.find(t => fuzzyTrackInfoEqual(t, trackInfoStub))
   }
 
   async update(trackInfo: TrackInfo) {

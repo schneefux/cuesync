@@ -1,9 +1,11 @@
 import TrackInfo from "./model/TrackInfo";
 
-export default function mergeTrackInfo(track1: TrackInfo, track2: TrackInfo) {
-  return {
-    ...track1,
-    ...track2,
-    cues: [].concat(track1.cues || [], track2.cues || [])
-  }
+/**
+ * Merge track data from different sources into one object.
+ */
+export default function mergeTrackInfo(...tracks: TrackInfo[]) {
+  tracks = tracks.filter(t => t !== undefined && t !== null)
+  const cues = [].concat(...tracks.map(t => t.cues || []))
+  // TODO don't overwrite { bpm: 80 } with { bpm: undefined }
+  return Object.assign({}, ...tracks, { cues })
 }

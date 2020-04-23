@@ -3,11 +3,12 @@ import TrackInfo from "./model/TrackInfo";
 import SeratoLibraryManager from "./serato/SeratoLibraryManager";
 import DjayLibraryManager from "./djay/DjayLibraryManager";
 import FileLibraryManager from "./file/FileLibraryManager";
+import mergeTrackInfo from "./merge";
 
 /**
  * User-facing library manager that unifies & syncs all libraries.
  */
-export default class DelegatingLibraryManager implements LibraryManager {
+export default class Library {
   fileLibraryManager = new FileLibraryManager()
 
   constructor(
@@ -24,17 +25,17 @@ export default class DelegatingLibraryManager implements LibraryManager {
     }
   }
 
-  async find(trackInfoStub: TrackInfo) {
-    if (this.djayLibraryManager) {
-      trackInfoStub = await this.djayLibraryManager.find(trackInfoStub)
-    }
-    if (this.seratoLibraryManager) {
-      trackInfoStub = await this.seratoLibraryManager.find(trackInfoStub)
-    }
-    if (trackInfoStub.filename !== undefined) {
-      trackInfoStub = await this.fileLibraryManager.find(trackInfoStub)
-    }
-    return trackInfoStub
+  async find(query: TrackInfo) {
+    // djay only knows title, artist, cues, key
+    const djayData = await this.djayLibraryManager?.find(query)
+    query = mergeTrackInfo(query, djayData)
+    // serato knows path, cues
+    const seratoData = await this.seratoLibraryManager?.find(query)
+    query = mergeTrackInfo(query, seratoData)
+    // file knows title, artist, genre, key
+    const fileData = await this.fileLibraryManager?.find(query)
+    query = mergeTrackInfo(query, fileData)
+    return query
   }
 
   async update(trackInfo: TrackInfo) {

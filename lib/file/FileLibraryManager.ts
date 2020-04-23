@@ -5,11 +5,11 @@ import LibraryManager from '../model/LibraryManager'
 import Id3TrackSerializer from './id3/Id3TrackSerializer'
 import TaglibTrackSerializer from './taglib/TaglibTrackSerializer'
 import TrackInfo from '../model/TrackInfo'
-import mergeTrackInfo from '../merge'
 
 export default class FileLibraryManager implements LibraryManager {
   id3Serializer = new Id3TrackSerializer()
   taglibSerializer = new TaglibTrackSerializer()
+  private tagCache = {} as { [path: string]: TrackInfo }
 
   async load() {
     throw new Error("Method not implemented.");
@@ -18,23 +18,28 @@ export default class FileLibraryManager implements LibraryManager {
   /**
    * Extend track info with file meta data.
    */
-  async find(trackInfoStub: TrackInfo) {
+  async find(stub: TrackInfo) {
     // TODO optionally scan file system for file?
-    if (trackInfoStub.filename == undefined) {
-      return trackInfoStub
+    if (stub.path == undefined) {
+      return null
+    }
+
+    if (stub.path in this.tagCache) {
+      return this.tagCache[stub.path]
     }
 
     let trackInfo: TrackInfo
 
-    if (trackInfoStub.filename.endsWith('.mp3')) {
-      const tags = await promisify(id3.readTags)(trackInfoStub.path)
+    if (stub.path.endsWith('.mp3')) {
+      const tags = await promisify(id3.readTags)(stub.path)
       trackInfo = this.id3Serializer.deserialize(tags)
     } else {
-      const tags = await promisify(taglib.readTags)(trackInfoStub.path)
+      const tags = await promisify(taglib.readTags)(stub.path)
       trackInfo = this.taglibSerializer.deserialize(tags)
     }
 
-    return mergeTrackInfo(trackInfoStub, trackInfo)
+    this.tagCache[stub.path] = trackInfo
+    return trackInfo
   }
 
   async update(trackInfo: TrackInfo) {

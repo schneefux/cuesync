@@ -7,8 +7,7 @@ export default interface LibraryManager {
   load(): Promise<void>
 
   /**
-   * Try to find a similar track in the library
-   * and return an object with the new properties added.
+   * Return a similar track in the library.
    */
   find(trackInfoStub: TrackInfo): Promise<TrackInfo|null>
 

@@ -5,7 +5,6 @@ import TrackInfo from "./model/TrackInfo";
  */
 export default function fuzzyTrackInfoEqual(track1: TrackInfo, track2: TrackInfo) {
   // TODO
-  // TODO identify as much data as possible from file names
   if (track1.isrc !== undefined && track1.isrc == track2.isrc) {
     return true
   }
@@ -18,10 +17,14 @@ export default function fuzzyTrackInfoEqual(track1: TrackInfo, track2: TrackInfo
     return true
   }
 
-  if (track1.filename !== undefined && track1.filename.toLowerCase().includes(track2.title?.toLowerCase())) {
-    return true
-  }
-  if (track2.filename !== undefined && track2.filename.toLowerCase().includes(track1.title?.toLowerCase())) {
+  return false
+}
+
+/**
+ * Fuzzy-compare track and path and return true if they match.
+ */
+export function fuzzyTrackInfoMatchesPath(track: TrackInfo, path: string) {
+  if (path.toLowerCase().includes(track.title?.toLowerCase())) {
     return true
   }
 

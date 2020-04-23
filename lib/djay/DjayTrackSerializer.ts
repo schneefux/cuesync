@@ -3,6 +3,7 @@ import { DjaySongEntry } from "./model/djay";
 import Cue from "../model/Cue";
 import TrackSerializer from "../model/TrackSerializer";
 import DjaySongInfo from "./model/DjaySongInfo";
+import { djayKeys } from "./model/djay"
 
 export default class DjayTrackSerializer implements TrackSerializer<DjaySongInfo> {
   /**
@@ -17,14 +18,23 @@ export default class DjayTrackSerializer implements TrackSerializer<DjaySongInfo
         milliseconds: seconds * 1000
       } as Cue))
 
-    return {
+    const trackInfo = {
       title,
       artists: artists.split(', '),
       cues,
-      bpm: songInfo.value['song.manualBpm'],
-      songStart: songInfo.value['song.songStart'],
       durationSeconds: parseInt(duration),
     } as TrackInfo
+    if ('song.manualBpm' in songInfo.value) {
+      trackInfo.bpm = songInfo.value['song.manualBpm']
+    }
+    if ('song.songStart' in songInfo.value) {
+      trackInfo.songStart = songInfo.value['song.songStart']
+    }
+    if ('song.manualKey' in songInfo.value) {
+      trackInfo.key = djayKeys[songInfo.value['song.manualKey']]
+    }
+
+    return trackInfo
   }
 
   /**
