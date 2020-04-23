@@ -4,8 +4,7 @@ import DjayLibrary from "./model/djay"
 import DjayTrackSerializer from "./DjayTrackSerializer";
 import LibraryManager from "../model/LibraryManager";
 import TrackInfo from "../model/TrackInfo";
-import fuzzyTrackInfoEqual from "../compare";
-import mergeTrackInfo from "../merge";
+import { fuzzyTrackInfoEqual } from "../compare";
 
 export default class DjayLibraryManager implements LibraryManager {
   tracks: TrackInfo[]

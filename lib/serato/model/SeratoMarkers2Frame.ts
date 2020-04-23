@@ -1,4 +1,4 @@
-import GeobFrame from "./GeobFrame"
+import Frame from "./Frame"
 import SeratoMarker from "./SeratoMarker"
 import SeratoCueMarker from "./SeratoCueMarker"
 import SeratoBpmLockMarker from "./SeratoBpmLockMarker"
@@ -31,15 +31,15 @@ function seratoMarkerFactory(id: string, payload: Buffer): SeratoMarker|null {
  * 'Serato Markers2' tag, containing information about BPM lock, track color, cues, loops and flips.
  * https://github.com/Holzhaus/serato-tags/blob/master/docs/serato_markers2.md
  */
-export default class SeratoMarkers2Frame implements GeobFrame<SeratoMarker[]> {
+export default class SeratoMarkers2Frame implements Frame<SeratoMarker[]> {
   encoding = 0
   mimetype = 'application/octet-stream'
   filename = ''
   id = 'Serato Markers2'
-  size = 513
+  size = 512
   versionMajor: number
   versionMinor: number
-  data: SeratoMarker[]
+  data: SeratoMarker[] = []
 
   decode(data: Buffer) {
     // version

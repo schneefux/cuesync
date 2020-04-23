@@ -1,5 +1,5 @@
 import SeratoMarkers2Frame from "./model/SeratoMarkers2Frame"
-import GeobFrame from "./model/GeobFrame"
+import Frame from "./model/Frame"
 import FrameEncoder from "./model/FrameEncoder"
 
 export default class SeratoFrameEncoder implements FrameEncoder<SeratoMarkers2Frame> {
@@ -8,8 +8,6 @@ export default class SeratoFrameEncoder implements FrameEncoder<SeratoMarkers2Fr
    */
   decode(buf: Buffer): SeratoMarkers2Frame|null {
     let rest = buf
-    const encoding = rest.readInt8()
-    rest = rest.slice(1)
     const mimetype = rest.slice(0, rest.indexOf('\x00')).toString()
     rest = rest.slice(mimetype.length + 1)
     const filename = rest.slice(0, rest.indexOf('\x00')).toString()
@@ -18,7 +16,7 @@ export default class SeratoFrameEncoder implements FrameEncoder<SeratoMarkers2Fr
     rest = rest.slice(id.length + 1)
     const data = rest
 
-    const geobFrame = { encoding, mimetype, filename, id, data } as GeobFrame<Buffer>
+    const geobFrame = { mimetype, filename, id, data } as Frame<Buffer>
     if (geobFrame.id == 'Serato Markers2') {
       const frame = new SeratoMarkers2Frame()
       frame.decode(geobFrame.data)
@@ -30,11 +28,9 @@ export default class SeratoFrameEncoder implements FrameEncoder<SeratoMarkers2Fr
   /**
    * Serialize frame into buffer.
    */
-  encode<T>(frame: GeobFrame<T>): Buffer {
+  encode<T>(frame: Frame<T>): Buffer {
     const buf = Buffer.alloc(frame.size)
     let cursor = 0
-    buf.writeUInt8(0, cursor)
-    cursor += 1
     buf.write(frame.mimetype + '\x00', cursor)
     cursor += frame.mimetype.length + 1
     buf.write(frame.filename + '\x00', cursor)

@@ -1,4 +1,3 @@
-import LibraryManager from "./model/LibraryManager";
 import TrackInfo from "./model/TrackInfo";
 import SeratoLibraryManager from "./serato/SeratoLibraryManager";
 import DjayLibraryManager from "./djay/DjayLibraryManager";
@@ -6,7 +5,7 @@ import FileLibraryManager from "./file/FileLibraryManager";
 import mergeTrackInfo from "./merge";
 
 /**
- * User-facing library manager that unifies & syncs all libraries.
+ * User-facing library manager that unifies access to all libraries.
  */
 export default class Library {
   fileLibraryManager = new FileLibraryManager()
@@ -25,6 +24,10 @@ export default class Library {
     }
   }
 
+  /**
+   * Given a query, collect as much information as possible
+   * from all available libraries.
+   */
   async find(query: TrackInfo) {
     // djay only knows title, artist, cues, key
     const djayData = await this.djayLibraryManager?.find(query)
@@ -38,8 +41,11 @@ export default class Library {
     return query
   }
 
-  async update(trackInfo: TrackInfo) {
-    throw new Error("Method not implemented.");
-    return null
+  async updateSerato(track: TrackInfo) {
+    return this.seratoLibraryManager.update(track)
+  }
+
+  async updateDjay(track: TrackInfo) {
+    return this.djayLibraryManager.update(track)
   }
 }

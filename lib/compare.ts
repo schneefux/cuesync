@@ -3,7 +3,7 @@ import TrackInfo from "./model/TrackInfo";
 /**
  * Fuzzy-compare two tracks and return true if they match.
  */
-export default function fuzzyTrackInfoEqual(track1: TrackInfo, track2: TrackInfo) {
+export function fuzzyTrackInfoEqual(track1: TrackInfo, track2: TrackInfo) {
   // TODO
   if (track1.isrc !== undefined && track1.isrc == track2.isrc) {
     return true

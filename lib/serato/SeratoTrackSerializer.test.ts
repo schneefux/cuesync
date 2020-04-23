@@ -54,7 +54,7 @@ const serializer = new SeratoTrackSerializer()
 test('should deserialize track info from ID3', () => {
   const geobTags = testId3Tags
     .filter(t => t.id == 'GEOB')
-    .map(t => Buffer.from(t.data, 'base64'))
+    .reduce((obj, t, index) => ({ ...obj, [index]: Buffer.from(t.data, 'base64').slice(1) }), {})
   const trackInfo = serializer.deserialize(geobTags)
 
   expect(trackInfo.cues).toMatchObject([
@@ -72,11 +72,23 @@ test('should deserialize track info from FLAC', () => {
     testFlacTag['SERATO_MARKERS_V2'],
     testFlacTag['SERATO_RELVOL'],
     testFlacTag['SERATO_VIDEO_ASSOC'],
-  ].map(t => Buffer.from(t[0], 'base64'))
+  ].reduce((obj, t, index) => ({ ...obj, [index]: Buffer.from(t[0], 'base64') }), {})
   const trackInfo = serializer.deserialize(geobTags)
 
   expect(trackInfo.cues).toMatchObject([
     { index: 0, color: '#cc0000', milliseconds: 5482 },
     { index: 1, color: '#0000cc', milliseconds: 150350 },
   ])
+})
+
+test('should serialize track info', () => {
+  const cues = [
+    { index: 0, color: '#cc0000', milliseconds: 5482 },
+    { index: 1, color: '#0000cc', milliseconds: 150350 },
+  ]
+  const map = serializer.serialize({ cues })
+
+  // TODO add BPM Lock and other frames
+  const expected = 'YXBwbGljYXRpb24vb2N0ZXQtc3RyZWFtAABTZXJhdG8gTWFya2VyczIAAABBUUZEVlVVQUFBQUFEUUFBQUFBVmFnRE1BQUFBQUFCRFZVVUFBQUFBRFFBQkFBSkxUZ0FBQU13QUFBQUEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA='
+  expect(map['Serato Markers2'].toString('base64')).toBe(expected)
 })
