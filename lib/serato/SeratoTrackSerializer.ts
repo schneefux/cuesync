@@ -4,7 +4,6 @@ import SeratoCueMarker from "./model/SeratoCueMarker"
 import TrackSerializer from "../model/TrackSerializer"
 import SeratoFrameEncoder from "./SeratoFrameEncoder"
 
-// TODO include all tags (not just geob Buffer[])
 export default class SeratoTrackSerializer implements TrackSerializer<Buffer[]> {
   encoder = new SeratoFrameEncoder()
 

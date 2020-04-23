@@ -4,6 +4,8 @@ import DjayLibrary from "./model/djay"
 import DjayTrackSerializer from "./DjayTrackSerializer";
 import LibraryManager from "../model/LibraryManager";
 import TrackInfo from "../model/TrackInfo";
+import fuzzyTrackInfoEqual from "../compare";
+import mergeTrackInfo from "../merge";
 
 export default class DjayLibraryManager implements LibraryManager {
   tracks: TrackInfo[]
@@ -18,8 +20,8 @@ export default class DjayLibraryManager implements LibraryManager {
   }
 
   async find(trackInfoStub: TrackInfo) {
-    // TODO write a proper distance function
-    return this.tracks.find(t => t.title == trackInfoStub.title)
+    const trackInfo = this.tracks.find(t => fuzzyTrackInfoEqual(t, trackInfoStub))
+    return mergeTrackInfo(trackInfoStub, trackInfo)
   }
 
   async update(trackInfo: TrackInfo) {

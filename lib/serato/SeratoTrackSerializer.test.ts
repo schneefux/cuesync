@@ -1,12 +1,6 @@
 import SeratoTrackSerializer from "./SeratoTrackSerializer"
 
 const testId3Tags = [
-  { id: 'TIT2', text: 'Bis Ich Nichts Mehr Fühle-773649382' },
-  { id: 'TCON', text: '' },
-  { id: 'TKEY', text: 'Cm' },
-  { id: 'TXXX', description: 'SERATO_PLAYCOUNT', value: '0' },
-  { id: 'RVAD', data: 'ABAAAAAAAAAAAA==' },
-  { id: 'TBPM', text: '83' },
   // Serato Overview
   // (ommitted)
   // Serato Analysis
@@ -23,18 +17,6 @@ const testId3Tags = [
   // (ommitted)
 ]
 const testFlacTag = {
-  ALBUM: [ 'Power To Kill' ],
-  ALBUMARTIST: [ 'Mc Bassman' ],
-  ARTIST: [ 'Mc Bassman, Dutta' ],
-  BPM: [ '88' ],
-  DATE: [ '2020' ],
-  DISCNUMBER: [ '1' ],
-  GENRE: [ 'Dance' ],
-  INITIALKEY: [ 'Gm' ],
-  ISRC: [ 'UKK762024002' ],
-  LENGTH: [ '263' ],
-  ORGANIZATION: [ 'Souped Up Records' ],
-  'REPLAYGAIN_*_GAIN': [ '-3.9' ],
   SERATO_ANALYSIS: [ 'YXBwbGljYXRpb24vb2N0ZXQtc3RyZWFtAABTZXJhdG8gQW5hbHlzaXMAAgEA' ],
   SERATO_AUTOGAIN: [
     'YXBwbGljYXRpb24vb2N0ZXQtc3RyZWFtAABTZXJhdG8gQXV0b3RhZ3MAAQE4Ny41MAAtNi44\n' +
@@ -65,8 +47,6 @@ const testFlacTag = {
   SERATO_VIDEO_ASSOC: [
     'YXBwbGljYXRpb24vb2N0ZXQtc3RyZWFtAABTZXJhdG8gVmlkQXNzb2MAAQEBAAAA'
   ],
-  TITLE: [ "Power To Kill (Dutta's Mix)" ],
-  TRACKNUMBER: [ '2' ]
 }
 
 const serializer = new SeratoTrackSerializer()
@@ -94,6 +74,7 @@ test('should deserialize track info from FLAC', () => {
     testFlacTag['SERATO_VIDEO_ASSOC'],
   ].map(t => Buffer.from(t[0], 'base64'))
   const trackInfo = serializer.deserialize(geobTags)
+
   expect(trackInfo.cues).toMatchObject([
     { index: 0, color: '#cc0000', milliseconds: 5482 },
     { index: 1, color: '#0000cc', milliseconds: 150350 },
