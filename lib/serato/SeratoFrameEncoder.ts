@@ -4,9 +4,9 @@ import FrameEncoder from "./model/FrameEncoder"
 
 export default class SeratoFrameEncoder implements FrameEncoder<SeratoMarkers2Frame> {
   /**
-   * Deserialize buffer into frames.
+   * Read GEOB ID.
    */
-  decode(buf: Buffer): SeratoMarkers2Frame|null {
+  readFrame(buf: Buffer): Frame<Buffer> {
     let rest = buf
     const mimetype = rest.slice(0, rest.indexOf('\x00')).toString()
     rest = rest.slice(mimetype.length + 1)
@@ -16,12 +16,20 @@ export default class SeratoFrameEncoder implements FrameEncoder<SeratoMarkers2Fr
     rest = rest.slice(id.length + 1)
     const data = rest
 
-    const geobFrame = { mimetype, filename, id, data } as Frame<Buffer>
-    if (geobFrame.id == 'Serato Markers2') {
-      const frame = new SeratoMarkers2Frame()
-      frame.decode(geobFrame.data)
-      return frame
+    return { mimetype, filename, id, data } as Frame<Buffer>
+  }
+
+  /**
+   * Deserialize buffer into frames.
+   */
+  decode(buf: Buffer): SeratoMarkers2Frame|null {
+    const frame = this.readFrame(buf)
+    if (frame.id == 'Serato Markers2') {
+      const markers2 = new SeratoMarkers2Frame()
+      markers2.decode(frame.data)
+      return markers2
     }
+
     return null
   }
 

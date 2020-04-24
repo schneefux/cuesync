@@ -15,7 +15,8 @@ const library = new Library(seratoLibrary, djayLibrary)
 
 async function main() {
   await library.load()
-  const theConspiracy = await library.find({ title: 'The Conspiracy' })
+  const theConspiracy = await library.find({ title: 'Immer noch aus Liebe' })
+  console.log(theConspiracy)
   theConspiracy.cues = [ { index: 0, milliseconds: 1234 } ] as Cue[]
   await library.updateSerato(theConspiracy)
   console.log(await library.find(theConspiracy))

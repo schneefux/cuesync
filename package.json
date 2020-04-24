@@ -10,10 +10,9 @@
   "author": "schneefux",
   "license": "UNLICENSED",
   "dependencies": {
-    "id3-rs": "^0.1.1",
     "seratojs": "^2.0.0",
     "simple-plist": "^1.1.0",
-    "taglib3": "^3.0.0"
+    "taglib3": "^3.0.4"
   },
   "devDependencies": {
     "@types/jest": "^25.2.1",

@@ -1,20 +1,19 @@
 import { promisify } from "util"
 import * as taglib from 'taglib3'
-import * as id3 from 'id3-rs'
 import SeratoTrackSerializer, { FrameMap } from "./SeratoTrackSerializer"
 import LibraryManager from "../model/LibraryManager"
 import * as seratojs from 'seratojs'
 import * as path from 'path'
 import TrackInfo from "../model/TrackInfo"
-import Id3Frame from "../file/id3/model/id3-rs"
-import TaglibInfo from "../file/taglib/model/taglib"
+import TaglibInfo, { TaglibId3Info } from "../file/taglib/model/taglib"
 import { fuzzyTrackInfoMatchesPath } from "../compare"
 
 // TODO replace seratojs by own implementation
 // or try https://github.com/Rickgg/serato-crater
 
+const readId3Tags = promisify(taglib.readId3Tags)
+const writeId3Tags = promisify(taglib.writeId3Tags)
 const readTaglibTags = promisify(taglib.readTags)
-const readId3Tags = promisify(id3.readTags)
 const writeTaglibTags = promisify(taglib.writeTags)
 
 export default class SeratoLibraryManager implements LibraryManager {
@@ -64,13 +63,15 @@ export default class SeratoLibraryManager implements LibraryManager {
    * Read Serato meta data from an audio file.
    */
   async readSeratoData(path: string) {
-    // TODO avoid duplicate file access in FileLibraryManager and here
     let frames: FrameMap
     if (path.endsWith('.mp3')) {
-      const tags = await readId3Tags(path) as Id3Frame[]
-      frames = tags
-        .filter(t => t.id == 'GEOB')
-        .reduce((obj, t, index) => ({ ...obj, [index]: Buffer.from(t.data, 'base64') }), {})
+      // taglib id3 dumps the whole frame, including the GEOB id
+      const info = await readId3Tags(path) as TaglibId3Info
+      const geobHeaderLength = 11 // TODO fix this upstream, make it smart or look up a reference for this value
+      frames = [...Object.entries(info)]
+        .filter(([name, value]) => name.toLowerCase().startsWith('serato'))
+        .reduce((obj, [name, value]) => ({ ...obj, [name]: Buffer.from(value, 'base64').slice(geobHeaderLength) }), {})
+      console.log(frames['Serato Markers2'].toString('base64'))
     } else {
       const mimetype = Buffer.from('application/octet-stream').toString('base64')
       const info = await readTaglibTags(path) as TaglibInfo
@@ -85,26 +86,26 @@ export default class SeratoLibraryManager implements LibraryManager {
   /**
    * Write Serato meta data to an audio file.
    */
-  async writeSeratoData(path: string, trackInfo: TrackInfo) {
+  async writeSeratoData(trackPath: string, trackInfo: TrackInfo) {
     const tags = this.serializer.serialize(trackInfo)
 
-    if (path.endsWith('.mp3')) {
-      const buffers = this.serializer.serialize(trackInfo)
-      const tags = await readId3Tags(path) as Id3Frame[]
-      console.log(tags)
-      throw Error('Not implemented')
-      // TODO decode base64 and add \x00 byte to beginning (= encoding of geob container)
+    if (trackPath.endsWith('.mp3')) {
+      // FIXME id3 write format is != id3 read format:
+      //  * write is base64(object)
+      //  * read is raw frame (header + id + mime type + object)
+
+      console.log('before', (await readId3Tags(trackPath)))
+      // TODO this is ugly - call encoder directly instead, skipping frame encoder
+      const buffer = tags['Serato Markers2'].slice('application/octet-stream\x00\x00Serato Markers2\x00'.length)
+      await writeId3Tags(trackPath, {
+        'Serato Markers2': buffer.toString('base64'),
+      })
     } else {
+      // VORBIS COMMENT but has newlines every 72 characters
       // split with \n every 72 chars
-      taglib.writeTagsSync(path, {
+      await writeTaglibTags(trackPath, {
         SERATO_MARKERS_V2: [tags['Serato Markers2'].toString('base64').replace(/(.{72})/g, '$1\n')],
       })
-      // TODO fix 'Could not parse file' in upstream implementation for async
-      /*
-      await writeTaglibTags(path, {
-        // SERATO_MARKERS_V2: [tags['Serato Markers2'].toString('base64').replace(/(.{72})/g, '$1\n')],
-      })
-      */
     }
   }
 }

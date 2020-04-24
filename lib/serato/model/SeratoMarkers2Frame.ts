@@ -47,7 +47,7 @@ export default class SeratoMarkers2Frame implements Frame<SeratoMarker[]> {
     this.versionMinor = data.readInt8(1)
 
     // content
-    // there is a line break every 72 chars, but the JS parser ignores it
+    // there is a line break every 72 chars for VORBIS COMMENT, but the JS parser ignores it
     let buf = Buffer.from(data.slice(2).toString(), 'base64')
 
     this.data = []
