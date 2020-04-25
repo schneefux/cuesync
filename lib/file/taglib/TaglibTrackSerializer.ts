@@ -16,6 +16,29 @@ export default class TaglibTrackSerializer implements TrackSerializer<TaglibInfo
   }
 
   serialize(trackInfo: TrackInfo): TaglibInfo {
-    throw new Error("Method not implemented.");
+    const tags = {} as TaglibInfo
+    if (trackInfo.album) {
+      tags.ALBUM = [trackInfo.album]
+    }
+    if (trackInfo.title) {
+      tags.TITLE = [trackInfo.title]
+    }
+    if (trackInfo.artists) {
+      tags.ARTIST = [trackInfo.artists.join(', ')]
+    }
+    if (trackInfo.bpm) {
+      tags.BPM = [trackInfo.bpm.toString()]
+    }
+    if (trackInfo.genre) {
+      tags.GENRE = [trackInfo.genre]
+    }
+    if (trackInfo.key) {
+      tags.INITIALKEY = [trackInfo.key]
+    }
+    if (trackInfo.isrc) {
+      tags.ISRC = [trackInfo.isrc]
+    }
+
+    return tags
   }
 }

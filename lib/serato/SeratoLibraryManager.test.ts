@@ -6,8 +6,9 @@ import SeratoLibraryManager from "./SeratoLibraryManager";
 const copyFile = promisify(copyFileCb)
 const fixtures = 'fixtures/'
 
+const library = new SeratoLibraryManager(fixtures)
+
 test('should read Serato data from mp3', async () => {
-  const library = new SeratoLibraryManager(fixtures)
   const trackInfo = await library.readSeratoData(fixtures + 'retro_funky.mp3')
 
   expect(trackInfo).toMatchObject({
@@ -20,7 +21,6 @@ test('should read Serato data from mp3', async () => {
 })
 
 test('should read Serato data from flac', async () => {
-  const library = new SeratoLibraryManager(fixtures)
   const trackInfo = await library.readSeratoData(fixtures + 'retro_funky.flac')
 
   expect(trackInfo).toMatchObject({
@@ -34,7 +34,6 @@ test('should read Serato data from flac', async () => {
 
 test('should write Serato data to flac', async () => {
   await copyFile(fixtures + 'retro_funky.flac', fixtures + 'tmp/retro_funky.flac')
-  const library = new SeratoLibraryManager(fixtures)
 
   await library.writeSeratoData(fixtures + 'tmp/retro_funky.flac', {
     cues: [
@@ -68,7 +67,6 @@ test('should write Serato data to flac', async () => {
 
 test('should write Serato data to mp3', async () => {
   await copyFile(fixtures + 'retro_funky.mp3', fixtures + 'tmp/retro_funky.mp3')
-  const library = new SeratoLibraryManager(fixtures)
 
   await library.writeSeratoData(fixtures + 'tmp/retro_funky.mp3', {
     cues: [

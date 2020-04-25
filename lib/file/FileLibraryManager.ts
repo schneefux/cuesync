@@ -5,6 +5,9 @@ import TaglibTrackSerializer from './taglib/TaglibTrackSerializer'
 import TrackInfo from '../model/TrackInfo'
 import TaglibInfo from './taglib/model/taglib'
 
+const readTags = promisify(taglib.readTags)
+const writeTags = promisify(taglib.writeTags)
+
 export default class FileLibraryManager implements LibraryManager {
   serializer = new TaglibTrackSerializer()
   private tagCache = {} as { [path: string]: TrackInfo }
@@ -26,7 +29,7 @@ export default class FileLibraryManager implements LibraryManager {
       return this.tagCache[stub.path]
     }
 
-    const tags = await promisify(taglib.readTags)(stub.path) as TaglibInfo
+    const tags = await readTags(stub.path) as TaglibInfo
     const trackInfo = this.serializer.deserialize(tags)
 
     this.tagCache[stub.path] = trackInfo
@@ -34,6 +37,17 @@ export default class FileLibraryManager implements LibraryManager {
   }
 
   async update(trackInfo: TrackInfo) {
-    throw new Error("Method not implemented.");
+    const path = trackInfo.path
+
+    if (path == undefined) {
+      return
+    }
+
+    if (path in this.tagCache) {
+      delete this.tagCache[path]
+    }
+
+    const tags = this.serializer.serialize(trackInfo)
+    await writeTags(path, tags)
   }
 }
