@@ -1,5 +1,5 @@
 {
-  "name": "cuebuddy",
+  "name": "cuesync",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -12,7 +12,7 @@
   "dependencies": {
     "seratojs": "^2.0.0",
     "simple-plist": "^1.1.0",
-    "taglib3": "^3.0.4"
+    "taglib3": "^3.0.5"
   },
   "devDependencies": {
     "@types/jest": "^25.2.1",
