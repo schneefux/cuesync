@@ -41,7 +41,9 @@ export default class DjayTrackSerializer implements TrackSerializer<DjaySongInfo
    * Serialize TrackInfo to library entry.
    */
   serialize(trackInfo: TrackInfo) {
-    const key = [trackInfo.title, trackInfo.artists.join(', '), trackInfo.durationSeconds].join('\t')
+    const key = [trackInfo.title, trackInfo.artists.join(', '), trackInfo.durationSeconds]
+      .join('\t')
+      .toLowerCase()
     const cueSecondsByIndex = trackInfo.cues.reduce((obj, cue) => ({ ...obj, [cue.index]: cue.milliseconds / 1000 }), {})
     const cuePoints = Array.from(Array(8))
       .map((e, index) => index in cueSecondsByIndex ? cueSecondsByIndex[index] : 0)

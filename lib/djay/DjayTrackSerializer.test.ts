@@ -24,12 +24,13 @@ test.skip('should deserialize empty cues', () => {
 
 test('should serialize track info', () => {
   const trackInfo = {
-    title: 'the conspiracy',
-    artists: [ 'albzzy', 'sk' ],
+    title: 'The Conspiracy',
+    artists: [ 'Albzzy', 'Sk' ],
     durationSeconds: 274,
     cues: [{ index: 0, milliseconds: 42.797550201416016 * 1000 } as Cue],
     bpm: undefined,
     songStart: undefined
   } as TrackInfo
+
   expect(serializer.serialize(trackInfo)).toMatchObject(testTrack)
 })

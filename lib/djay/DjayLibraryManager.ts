@@ -6,6 +6,9 @@ import LibraryManager from "../model/LibraryManager";
 import TrackInfo from "../model/TrackInfo";
 import { fuzzyTrackInfoEqual } from "../compare";
 
+const plistRead = promisify(plist.readFile)
+const plistWrite = promisify(plist.writeFile)
+
 export default class DjayLibraryManager implements LibraryManager {
   tracks: TrackInfo[]
   serializer = new DjayTrackSerializer()
@@ -13,7 +16,7 @@ export default class DjayLibraryManager implements LibraryManager {
   constructor(public path: string) { }
 
   async load() {
-    const library = await promisify(plist.readFile)(this.path) as DjayLibrary
+    const library = await plistRead(this.path) as DjayLibrary
     const songEntries = [...Object.entries(library['Song Entries'])]
     this.tracks = songEntries.map(([key, value]) => this.serializer.deserialize({ key, value }))
   }
@@ -24,6 +27,17 @@ export default class DjayLibraryManager implements LibraryManager {
   }
 
   async update(trackInfo: TrackInfo) {
-    // TODO
+    const index = this.tracks.findIndex(t => fuzzyTrackInfoEqual(t, trackInfo))
+    this.tracks[index] = trackInfo
+
+    const plist = {
+      'Song Entries': {}
+    }
+    this.tracks.forEach(t => {
+      const entry = this.serializer.serialize(t)
+      plist['Song Entries'][entry.key] = entry.value
+    })
+
+    await plistWrite(this.path, plist)
   }
 }
