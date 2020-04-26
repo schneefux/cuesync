@@ -1,12 +1,13 @@
 import { promisify } from "util"
+import * as globCb from 'glob'
 import * as taglib from 'taglib3'
 import SeratoTrackSerializer, { FrameMap } from "./SeratoTrackSerializer"
 import LibraryManager from "../model/LibraryManager"
-import * as seratojs from 'seratojs'
+import * as seratoCrater from 'serato-crater'
 import * as path from 'path'
-import TrackInfo from "../model/TrackInfo"
 import TaglibInfo, { TaglibId3Info } from "../file/taglib/model/taglib"
 import { fuzzyTrackInfoMatchesPath } from "../compare"
+import TrackInfo from "../model/TrackInfo"
 
 // TODO replace seratojs by own implementation
 // or try https://github.com/Rickgg/serato-crater
@@ -15,24 +16,44 @@ const readId3Tags = promisify(taglib.readId3Tags)
 const writeId3Tags = promisify(taglib.writeId3Tags)
 const readTaglibTags = promisify(taglib.readTags)
 const writeTaglibTags = promisify(taglib.writeTags)
+const glob = promisify(globCb)
 
 export default class SeratoLibraryManager implements LibraryManager {
   filePaths: string[]
   serializer = new SeratoTrackSerializer()
 
-  constructor(public cratesPath: string) { }
+  constructor(public rootPath: string) { }
 
   async load() {
     this.filePaths = []
-    const crates = await seratojs.listCrates(this.cratesPath)
-    for (const crate of crates) {
-      const songPaths = await crate.getSongPaths()
-      for (const songPath of songPaths) {
-        // TODO maybe scan all files if performance isn't too bad?
-        // FIXME temporary workaround for song path (bug in serato-js)
-        this.filePaths.push(songPath.replace(/^P/, 'M'))
-      }
+    const crates = await this.listCrates(this.rootPath)
+    for (const cratePath of crates) {
+      const songPaths = await this.listSongs(cratePath)
+      // TODO filter duplicates
+      songPaths.forEach(s => this.filePaths.push(s))
     }
+  }
+
+  /**
+   * Find all crates under the given root path.
+   */
+  async listCrates(root: string) {
+    const crates = await glob('**/_Serato_/Subcrates/*.crate', {
+      cwd: root,
+      silent: true,
+      strict: false,
+    })
+    return crates.map(c => path.join(root, c))
+  }
+
+  /**
+   * Read all songs from the crate.
+   */
+  async listSongs(crate: string) {
+    // song paths are relative to the folder that contains the _Serato_ folder
+    const crateData = await seratoCrater(crate) as { columns: string[], songs: string[] }
+    const seratoParentPath = path.resolve(path.join(crate, '..', '..', '..'))
+    return crateData.songs.map(song => path.join(seratoParentPath, song))
   }
 
   /**

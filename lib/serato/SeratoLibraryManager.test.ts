@@ -1,4 +1,5 @@
 import * as taglib from 'taglib3'
+import * as path from 'path'
 import { copyFile as copyFileCb } from "fs";
 import { promisify } from "util";
 import SeratoLibraryManager from "./SeratoLibraryManager";
@@ -86,4 +87,14 @@ test('should write Serato data to mp3', async () => {
     /* "Serato Offsets_": "...", */
     /* "Serato Overview": "...", */
   })
+})
+
+test('should detect crate', async () => {
+  const crates = await library.listCrates(fixtures)
+  expect(crates.length).toBe(1)
+})
+
+test('should parse crate', async () => {
+  const songs = await library.listSongs(path.join(fixtures, '_Serato_', 'Subcrates', 'tekk.crate'))
+  expect(songs[0]).toBe(path.join(path.resolve(fixtures), 'tekk', 'Bis Ich Nichts Mehr Fühle-773649382.mp3'))
 })

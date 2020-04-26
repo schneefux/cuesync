@@ -8,7 +8,7 @@ import Cue from "./lib/model/Cue"
 // TODO auto-detect these paths
 const djayLibraryPath = path.join(os.homedir(), '\\AppData\\Local\\Packages\\59BEBC1A.djayPro_e3tqh12mt5rj6\\LocalState\\Library\\Algoriddim\\djay Preset Library.plist')
 const djayLibrary = new DjayLibraryManager(djayLibraryPath)
-const seratoCratePath = 'M:\\_Serato_\\Subcrates'
+const seratoCratePath = 'M:\\'
 const seratoLibrary = new SeratoLibraryManager(seratoCratePath)
 
 const library = new Library(seratoLibrary, djayLibrary)
