@@ -11,7 +11,7 @@ export default class SeratoBpmLockMarker implements SeratoMarker {
   isActive: boolean
 
   decode(buf: Buffer) {
-    this.isActive = buf.readUInt8() != 0
+    this.isActive = buf.readUInt8(0) != 0
   }
 
   encode() {

@@ -1,9 +1,9 @@
-import DjayLibraryManager from "./lib/djay/DjayLibraryManager"
+import DjayLibraryManager from "./djay/DjayLibraryManager"
 import * as path from "path"
 import * as os from "os"
-import SeratoLibraryManager from "./lib/serato/SeratoLibraryManager"
-import Library from "./lib/Library"
-import Cue from "./lib/model/Cue"
+import SeratoLibraryManager from "./serato/SeratoLibraryManager"
+import Library from "./Library"
+import Cue from "./model/Cue"
 
 // TODO auto-detect these paths
 const djayLibraryPath = path.join(os.homedir(), '\\AppData\\Local\\Packages\\59BEBC1A.djayPro_e3tqh12mt5rj6\\LocalState\\Library\\Algoriddim\\djay Preset Library.plist')

@@ -2,26 +2,48 @@
   "name": "cuesync",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "./dist/main/index.js",
   "scripts": {
-    "start": "ts-node index.ts",
-    "test": "jest"
+    "dev": "node .electron-nuxt/check-engines.js && cross-env-shell NODE_ENV=development node .electron-nuxt/index.js",
+    "build": "node .electron-nuxt/check-engines.js && cross-env-shell NODE_ENV=production node .electron-nuxt/index.js",
+    "test": "jest",
+    "preinstall": "node .electron-nuxt/check-engines.js",
+    "postinstall": "electron-builder install-app-deps"
+  },
+  "engines": {
+    "node": ">=12.16.0"
   },
   "author": "schneefux",
   "license": "UNLICENSED",
-  "dependencies": {
-    "glob": "^7.1.6",
-    "serato-crater": "^1.0.0",
-    "simple-plist": "^1.1.0",
-    "taglib3": "^3.0.5"
-  },
   "devDependencies": {
+    "@fortawesome/fontawesome-free": "^5.13.0",
+    "@nuxt/typescript-build": "^0.6.6",
     "@types/glob": "^7.1.1",
     "@types/jest": "^25.2.1",
-    "@types/node": "^13.13.1",
+    "@types/node": "^12.12.37",
+    "@xpda-dev/core": "^0.1.5",
+    "@xpda-dev/electron-builder": "^0.1.1",
+    "@xpda-dev/electron-launcher": "^0.1.1",
+    "@xpda-dev/webpack-step": "^0.1.2",
+    "browser-env": "^3.3.0",
+    "core-js": "2.6",
+    "cross-env": "^7.0.2",
+    "deepmerge": "^4.2.2",
+    "electron": "^8.2.3",
+    "electron-builder": "^22.5.1",
+    "electron-debug": "^3.0.1",
+    "glob": "^7.1.6",
     "jest": "^25.4.0",
+    "nuxt": "^2.12.2",
+    "serato-crater": "^1.0.0",
+    "simple-plist": "^1.1.0",
+    "taglib3": "^3.0.5",
     "ts-jest": "^25.4.0",
     "ts-node": "^8.9.0",
-    "typescript": "^3.8.3"
+    "typescript": "^3.8.3",
+    "vue-cli": "^2.9.6",
+    "vue-devtools": "^5.1.3",
+    "webpack": "^4.43.0",
+    "webpack-node-externals": "^1.7.2"
   }
 }

@@ -59,7 +59,7 @@ export default class SeratoMarkers2Frame implements Frame<SeratoMarker[]> {
       buf = buf.slice(id.length + 1)
 
       // size
-      const size = buf.readUInt32BE()
+      const size = buf.readUInt32BE(0)
       buf = buf.slice(4)
 
       // payload
