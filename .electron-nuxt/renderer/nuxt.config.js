@@ -22,7 +22,7 @@ const baseConfig = {
   },
   plugins: [
     { ssr: true, src: path.join(__dirname, 'resources-plugin.js') }
-  ]
+  ],
 };
 
 const baseExtend = (config, { isClient }) => {
