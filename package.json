@@ -33,6 +33,7 @@
     "electron-debug": "^3.0.1",
     "glob": "^7.1.6",
     "jest": "^25.4.0",
+    "node-sass": "^4.14.0",
     "nuxt": "^2.12.2",
     "serato-crater": "^1.0.0",
     "simple-plist": "^1.1.0",
@@ -46,6 +47,8 @@
     "webpack-node-externals": "^1.7.2"
   },
   "dependencies": {
-    "@carbon/vue": "^2.24.1"
+    "@carbon/themes": "^10.11.2",
+    "@carbon/vue": "^2.24.1",
+    "sass-loader": "^8.0.2"
   }
 }

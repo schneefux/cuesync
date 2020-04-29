@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import 'carbon-components/css/carbon-components.css'
+import '@/assets/carbon.scss'
 import CarbonComponentsVue from '@carbon/vue'
 
 Vue.use(CarbonComponentsVue)
