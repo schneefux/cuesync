@@ -10,20 +10,22 @@ const plistRead = promisify(plist.readFile)
 const plistWrite = promisify(plist.writeFile)
 
 export default class DjayLibraryManager implements LibraryManager {
-  tracks: TrackInfo[]
+  tracks: TrackInfo[] = []
   serializer = new DjayTrackSerializer()
 
   constructor(public path: string) { }
 
   async load() {
     const library = await plistRead(this.path) as DjayLibrary
-    const songEntries = [...Object.entries(library['Song Entries'])]
-    this.tracks = songEntries.map(([key, value]) => this.serializer.deserialize({ key, value }))
+    if (library['Song Entries']) {
+      const songEntries = [...Object.entries(library['Song Entries'])]
+      this.tracks = songEntries.map(([key, value]) => this.serializer.deserialize({ key, value }))
+    }
   }
 
   async find(trackInfoStub: TrackInfo) {
     // TODO is it possible to read paths for local files?
-    return this.tracks.find(t => fuzzyTrackInfoEqual(t, trackInfoStub))
+    return this.tracks.find(t => fuzzyTrackInfoEqual(t, trackInfoStub)) || null
   }
 
   async update(trackInfo: TrackInfo) {

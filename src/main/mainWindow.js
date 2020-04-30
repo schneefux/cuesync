@@ -13,6 +13,8 @@ const winHandler = new BrowserWinHandler({
 winHandler.onCreated(browserWindow => {
   if (isDev) browserWindow.loadURL(DEV_SERVER_URL)
   else browserWindow.loadFile(INDEX_PATH)
+
+  browserWindow.setMenuBarVisibility(false)
 })
 
 export default winHandler

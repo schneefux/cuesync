@@ -30,7 +30,7 @@ export default class DjayTrackSerializer implements TrackSerializer<DjaySongInfo
     if ('song.songStart' in songInfo.value) {
       trackInfo.songStart = songInfo.value['song.songStart']
     }
-    if ('song.manualKey' in songInfo.value) {
+    if (songInfo.value['song.manualKey'] !== undefined) {
       trackInfo.key = djayKeys[songInfo.value['song.manualKey']]
     }
 
@@ -41,6 +41,13 @@ export default class DjayTrackSerializer implements TrackSerializer<DjaySongInfo
    * Serialize TrackInfo to library entry.
    */
   serialize(trackInfo: TrackInfo) {
+    if (trackInfo.title == undefined
+      || trackInfo.artists == undefined
+      || trackInfo.durationSeconds == undefined
+      || trackInfo.cues == undefined) {
+      throw new Error('cannot serialize track')
+    }
+
     const key = [trackInfo.title, trackInfo.artists.join(', '), trackInfo.durationSeconds]
       .join('\t')
       .toLowerCase()

@@ -17,6 +17,7 @@
   "license": "UNLICENSED",
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.13.0",
+    "@fullhuman/postcss-purgecss": "^2.1.2",
     "@nuxt/typescript-build": "^0.6.6",
     "@types/glob": "^7.1.1",
     "@types/jest": "^25.2.1",
@@ -38,6 +39,7 @@
     "serato-crater": "^1.0.0",
     "simple-plist": "^1.1.0",
     "taglib3": "^3.0.5",
+    "tailwindcss": "^1.4.1",
     "ts-jest": "^25.4.0",
     "ts-node": "^8.9.0",
     "typescript": "^3.8.3",

@@ -24,7 +24,7 @@ export function fuzzyTrackInfoEqual(track1: TrackInfo, track2: TrackInfo) {
  * Fuzzy-compare track and path and return true if they match.
  */
 export function fuzzyTrackInfoMatchesPath(track: TrackInfo, path: string) {
-  if (path.toLowerCase().includes(track.title?.toLowerCase())) {
+  if (track.title !== undefined && path.toLowerCase().includes(track.title.toLowerCase())) {
     return true
   }
 
