@@ -1,21 +1,23 @@
 <template>
   <div class="flex h-full">
     <div class="pane">
-      <source-pane></source-pane>
+      <djay-pane></djay-pane>
     </div>
     <div class="pane border-primary-400 border-l-2">
-      right pane
+      <serato-pane></serato-pane>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import SourcePane from '@/components/SourcePane.vue'
+import DjayPane from '@/components/DjayPane.vue'
+import SeratoPane from '@/components/SeratoPane.vue'
 
 export default Vue.extend({
   components: {
-    SourcePane,
+    DjayPane,
+    SeratoPane,
   }
 })
 </script>

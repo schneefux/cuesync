@@ -11,7 +11,10 @@
     "postinstall": "electron-builder install-app-deps"
   },
   "engines": {
-    "node": ">=12.16.0"
+    "node": ">=13"
+  },
+  "cmake-js": {
+    "runtime": "electron"
   },
   "author": "schneefux",
   "license": "UNLICENSED",
@@ -50,6 +53,6 @@
   },
   "dependencies": {
     "sass-loader": "^8.0.2",
-    "taglib3": "^3.0.6"
+    "taglib3": "^3.0.7"
   }
 }

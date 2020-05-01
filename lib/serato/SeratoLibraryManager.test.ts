@@ -104,4 +104,8 @@ test('should cache crate contents', async () => {
   await library.load()
   const tracks = await library.list()
   expect(tracks.length).toBe(34)
+  expect(tracks[0]).toMatchObject({
+    path: 'M:\\deezloader\\music\\dj_dnb_jumpup\\Aftershock',
+    filename: 'Aftershock CD 1 TRACK 1 (FLAC).flac',
+  })
 })

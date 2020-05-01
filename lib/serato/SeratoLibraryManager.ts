@@ -35,7 +35,10 @@ export default class SeratoLibraryManager implements LibraryManager {
   }
 
   list() {
-    return this.filePaths.map(fp => ({ path: fp } as TrackInfo))
+    return this.filePaths.map(fp => ({
+      path: fp,
+      filename: path.basename(fp),
+    } as TrackInfo))
   }
 
   /**

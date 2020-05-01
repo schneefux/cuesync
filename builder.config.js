@@ -49,6 +49,7 @@ module.exports = {
   directories: {
     output: 'build'
   },
+  buildDependenciesFromSource: true, // force compilation of taglib3
   // default files: https://www.electron.build/configuration/contents
   files: [
     'package.json',
