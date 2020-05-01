@@ -1,3 +1,5 @@
+const path = require('path')
+
 module.exports = {
   mode: 'spa', // or 'universal'
   head: {
@@ -6,7 +8,6 @@ module.exports = {
   loading: false,
   plugins: [
     '@/plugins/icons',
-    // '@/plugins/carbon',
   ],
   buildModules: [
     '@nuxt/typescript-build',
@@ -18,6 +19,7 @@ module.exports = {
     '@/assets/app.scss',
   ],
   build: {
+    // optimize tailwind
     postcss: {
       plugins: {
         tailwindcss: {},
