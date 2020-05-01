@@ -16,6 +16,11 @@ export default class FileLibraryManager implements LibraryManager {
     throw new Error("Method not implemented.");
   }
 
+  list() {
+    throw new Error("Method not implemented.")
+    return []
+  }
+
   /**
    * Extend track info with file meta data.
    */

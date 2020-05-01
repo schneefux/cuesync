@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
-    "outDir": "dist"
+    "outDir": "dist",
+    "noImplicitAny": false,
+    "strict": true
   },
   "types": ["jest"],
   "include": [

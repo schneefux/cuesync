@@ -9,22 +9,23 @@ import SeratoColorMarker from "./SeratoColorMarker"
  */
 function seratoMarkerFactory(id: string, payload: Buffer): SeratoMarker|null {
   let marker: SeratoMarker
+
   switch (id) {
     case 'CUE':
       marker = new SeratoCueMarker()
       marker.decode(payload)
-      break
+      return marker
     case 'BPMLOCK':
       marker = new SeratoBpmLockMarker()
       marker.decode(payload)
-      break
+      return marker
     case 'COLOR':
       marker = new SeratoColorMarker()
       marker.decode(payload)
-      break
+      return marker
   }
 
-  return marker
+  return null
 }
 
 /**
@@ -37,8 +38,8 @@ export default class SeratoMarkers2Frame implements Frame<SeratoMarker[]> {
   filename = ''
   id = 'Serato Markers2'
   size = 512
-  versionMajor: number
-  versionMinor: number
+  versionMajor: number = 0
+  versionMinor: number = 0
   data: SeratoMarker[] = []
 
   decode(data: Buffer) {
@@ -65,7 +66,10 @@ export default class SeratoMarkers2Frame implements Frame<SeratoMarker[]> {
       // payload
       let payload = buf.slice(0, size)
 
-      this.data.push(seratoMarkerFactory(id, payload))
+      const marker = seratoMarkerFactory(id, payload)
+      if (marker !== null) {
+        this.data.push(marker)
+      }
 
       buf = buf.slice(size);
     } while (buf.length && buf.slice(0, 1).toString() != '\x00')

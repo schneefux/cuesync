@@ -98,3 +98,10 @@ test('should parse crate', async () => {
   const songs = await library.listSongs(path.join(fixtures, '_Serato_', 'Subcrates', 'tekk.crate'))
   expect(songs[0]).toBe(path.join(path.resolve(fixtures), 'tekk', 'Bis Ich Nichts Mehr Fühle-773649382.mp3'))
 })
+
+test('should cache crate contents', async () => {
+  const library = new SeratoLibraryManager(fixtures)
+  await library.load()
+  const tracks = await library.list()
+  expect(tracks.length).toBe(34)
+})

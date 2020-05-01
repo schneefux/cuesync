@@ -6,7 +6,7 @@ import SeratoMarker from "./SeratoMarker"
 export default class SeratoColorMarker implements SeratoMarker {
   id = 'COLOR'
   size = 4
-  color: string
+  color: string = '#ffffff'
 
   decode(buf: Buffer) {
     // \x00

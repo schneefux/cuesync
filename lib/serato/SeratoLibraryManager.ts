@@ -16,10 +16,10 @@ const readId3Tags = promisify(taglib.readId3Tags)
 const writeId3Tags = promisify(taglib.writeId3Tags)
 const readTaglibTags = promisify(taglib.readTags)
 const writeTaglibTags = promisify(taglib.writeTags)
-const glob = promisify(globCb)
+const glob = promisify(globCb as any)
 
 export default class SeratoLibraryManager implements LibraryManager {
-  filePaths: string[]
+  filePaths: string[] = []
   serializer = new SeratoTrackSerializer()
 
   constructor(public rootPath: string) { }
@@ -32,6 +32,10 @@ export default class SeratoLibraryManager implements LibraryManager {
       // TODO filter duplicates
       songPaths.forEach(s => this.filePaths.push(s))
     }
+  }
+
+  list() {
+    return this.filePaths.map(fp => ({ path: fp } as TrackInfo))
   }
 
   /**
@@ -77,6 +81,9 @@ export default class SeratoLibraryManager implements LibraryManager {
   }
 
   async update(trackInfo: TrackInfo) {
+    if (trackInfo.path === undefined) {
+      throw new Error('track info path is undefined')
+    }
     this.writeSeratoData(trackInfo.path, trackInfo)
   }
 

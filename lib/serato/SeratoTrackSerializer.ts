@@ -26,7 +26,8 @@ export default class SeratoTrackSerializer implements TrackSerializer<FrameMap> 
     if (markers2) {
       trackInfo.cues = markers2.data
         .filter(d => d instanceof SeratoCueMarker)
-        .map((cueMarker: SeratoCueMarker) => ({
+        .map(marker => marker as SeratoCueMarker)
+        .map(cueMarker => ({
           index: cueMarker.index,
           color: cueMarker.color,
           milliseconds: cueMarker.milliseconds,

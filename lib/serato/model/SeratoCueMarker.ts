@@ -6,9 +6,9 @@ import SeratoMarker from "./SeratoMarker"
 export default class SeratoCueMarker implements SeratoMarker {
   id = 'CUE'
   size = 13
-  index: number
-  milliseconds: number
-  color: string
+  index: number = 0
+  milliseconds: number = 0
+  color: string = '#ffffff'
 
   decode(buf: Buffer) {
     // \x00

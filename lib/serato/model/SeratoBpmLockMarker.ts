@@ -8,7 +8,7 @@ import SeratoMarker from "./SeratoMarker"
 export default class SeratoBpmLockMarker implements SeratoMarker {
   id = 'BPMLOCK'
   size = 1
-  isActive: boolean
+  isActive: boolean = false
 
   decode(buf: Buffer) {
     this.isActive = buf.readUInt8(0) != 0

@@ -2,12 +2,18 @@ import TrackInfo from "./TrackInfo";
 
 export default interface LibraryManager {
   /**
-   * Load library metadata.
+   * Load library metadata into memory.
    */
   load(): Promise<void>
 
   /**
-   * Return a similar track in the library.
+   * Return all tracks from memory.
+   */
+  list(): TrackInfo[]
+
+  /**
+   * Search a similar track from memory
+   * and load additional attributes if available.
    */
   find(trackInfoStub: TrackInfo): Promise<TrackInfo|null>
 

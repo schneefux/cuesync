@@ -12,11 +12,13 @@ test('should load tracks from plist', async () => {
   const library = new DjayLibraryManager(fixtures + 'djay_library.plist')
   await library.load()
 
+  const tracks = await library.list()
   const trackInfo = await library.find({
     artists: ['Premium'],
     title: 'Chewbacca',
   })
 
+  expect(tracks.length).toBe(50)
   expect(trackInfo).toMatchObject({
     artists: ['premium'],
     durationSeconds: 266,
