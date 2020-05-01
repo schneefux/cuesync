@@ -40,5 +40,12 @@ module.exports = {
           : {})
       }
     },
+    // load native modules
+    extend(config) {
+      config.module.rules.push({
+        test: /\.node$/,
+        use: 'node-loader',
+      })
+    },
   },
 };
