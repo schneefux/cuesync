@@ -5,10 +5,11 @@ import SeratoTrackSerializer, { FrameMap } from "./SeratoTrackSerializer"
 import LibraryManager from "../model/LibraryManager"
 import * as seratoCrater from 'serato-crater'
 import * as path from 'path'
-import TaglibInfo, { TaglibId3Info } from "../file/taglib/model/taglib"
+import TaglibInfo, { TaglibId3Info } from "./taglib/model/taglib"
 import { fuzzyTrackInfoEqual } from "../compare"
 import TrackInfo from "../model/TrackInfo"
 import * as fs from "fs"
+import TaglibTrackSerializer from "./taglib/TaglibTrackSerializer"
 
 // TODO replace seratojs by own implementation
 // or try https://github.com/Rickgg/serato-crater
@@ -21,7 +22,8 @@ const glob = promisify(globCb as any)
 
 export default class SeratoLibraryManager implements LibraryManager {
   tracks: TrackInfo[] = []
-  serializer = new SeratoTrackSerializer()
+  taglibSerializer = new TaglibTrackSerializer()
+  seratoSerializer = new SeratoTrackSerializer()
 
   constructor(public rootPath: string) { }
 
@@ -40,12 +42,7 @@ export default class SeratoLibraryManager implements LibraryManager {
         }
 
         try {
-          const data = await this.readSeratoData(songPath)
-          this.tracks.push({
-            path: songPath,
-            filename: path.basename(songPath),
-            ...data,
-          })
+          this.tracks.push(await this.loadTrack(songPath))
         } catch (err) {
           console.error('could not parse', songPath, err)
         }
@@ -80,18 +77,40 @@ export default class SeratoLibraryManager implements LibraryManager {
   }
 
   /**
-   * Try to look up the file's path if it is unknown.
-   * If a path is known, read Serato file data.
+   * Return a track from the cache.
    */
-  async find(trackInfo: TrackInfo) {
+  find(trackInfo: TrackInfo) {
     return this.tracks.find(t => fuzzyTrackInfoEqual(trackInfo, t)) || null
   }
 
+  /**
+   * Write Serato and ID3 tags.
+   */
   async update(trackInfo: TrackInfo) {
     if (trackInfo.path === undefined) {
       throw new Error('track info path is undefined')
     }
     this.writeSeratoData(trackInfo.path, trackInfo)
+
+    const taglibTags = this.taglibSerializer.serialize(trackInfo)
+    await writeTaglibTags(trackInfo.path, taglibTags)
+  }
+
+  /**
+   * Load a track and all its attributes from the file system.
+   */
+  async loadTrack(trackPath: string): Promise<TrackInfo> {
+    // TODO avoid duplicate readTaglibTags call
+    const seratoData = await this.readSeratoData(trackPath)
+    const tags = await readTaglibTags(trackPath) as TaglibInfo
+    const taglibData = this.taglibSerializer.deserialize(tags)
+
+    return {
+      path: trackPath,
+      filename: path.basename(trackPath),
+      ...seratoData,
+      ...taglibData,
+    }
   }
 
   /**
@@ -113,14 +132,14 @@ export default class SeratoLibraryManager implements LibraryManager {
         .reduce((obj, [name, value]) => ({ ...obj, [name]: Buffer.from(value[0], 'base64') }), {})
     }
 
-    return this.serializer.deserialize(frames)
+    return this.seratoSerializer.deserialize(frames)
   }
 
   /**
    * Write Serato meta data to an audio file.
    */
   async writeSeratoData(trackPath: string, trackInfo: TrackInfo) {
-    const tags = this.serializer.serialize(trackInfo)
+    const tags = this.seratoSerializer.serialize(trackInfo)
 
     if (trackPath.endsWith('.mp3')) {
       await writeId3Tags(trackPath, {

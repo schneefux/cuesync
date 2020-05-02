@@ -1,15 +1,12 @@
 import TrackInfo from "./model/TrackInfo";
 import SeratoLibraryManager from "./serato/SeratoLibraryManager";
 import DjayLibraryManager from "./djay/DjayLibraryManager";
-import FileLibraryManager from "./file/FileLibraryManager";
 import mergeTrackInfo from "./merge";
 
 /**
  * User-facing library manager that unifies access to all libraries.
  */
 export default class Library {
-  fileLibraryManager = new FileLibraryManager()
-
   constructor(
     public seratoLibraryManager?: SeratoLibraryManager,
     public djayLibraryManager?: DjayLibraryManager,
@@ -32,12 +29,9 @@ export default class Library {
     // djay only knows title, artist, cues, key
     const djayData = await this.djayLibraryManager?.find(query)
     query = mergeTrackInfo(query, djayData)
-    // serato knows path, cues
+    // serato knows path, cues, title, artist, genre, key
     const seratoData = await this.seratoLibraryManager?.find(query)
     query = mergeTrackInfo(query, seratoData)
-    // file knows title, artist, genre, key
-    const fileData = await this.fileLibraryManager?.find(query)
-    query = mergeTrackInfo(query, fileData)
     return query
   }
 

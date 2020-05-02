@@ -36,7 +36,7 @@ export default Vue.extend({
       selection: undefined as TrackInfo,
       formatters: {
         'title': id,
-        'artists': x => x.join(', '),
+        'artists': x => x == undefined ? '' : x.join(', '),
         'filename': id,
         'cues': x => x == undefined ? '' : x.length > 0 ? '✔️' : '❌'
       }
