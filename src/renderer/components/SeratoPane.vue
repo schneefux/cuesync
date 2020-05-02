@@ -1,8 +1,7 @@
 <template>
   <div>
-    <button @click="load" class="button">Reload Serato</button>
-    <input type="text" v-model="search" class="ml-2 textinput">
-    <div class="mt-2 overflow-y-auto h-70vh">
+    <h2 class="text-lg font-medium text-primary-500">Serato Library</h2>
+    <div class="mt-2 overflow-y-auto h-50vh">
       <track-table :value="tracks"></track-table>
     </div>
   </div>
@@ -25,8 +24,6 @@ export default Vue.extend({
     const seratoLibrary = new SeratoLibraryManager(seratoCratePath)
     return {
       seratoLibrary,
-      search: '',
-      trackInfo: {} as TrackInfo|null,
       tracks: [] as TrackInfo[],
     }
   },
@@ -39,13 +36,5 @@ export default Vue.extend({
       this.tracks = this.seratoLibrary.list()
     },
   },
-  watch: {
-    async search() {
-      this.trackInfo = await this.seratoLibrary.find({ title: this.search })
-    },
-  },
 })
 </script>
-
-<style lang="scss" scoped>
-</style>

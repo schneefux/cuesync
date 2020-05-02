@@ -6,7 +6,13 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="track in value" :key="track.path">
+      <tr
+        v-for="track in value"
+        :key="track.path"
+        :class="{ 'bg-background-400': track.selected }"
+        class="cursor-pointer"
+        @click="$set(track, 'selected', !track.selected)"
+      >
         <td v-for="col in columns" :key="track.path + col">{{ formatters[col](track[col]) }}</td>
       </tr>
     </tbody>
