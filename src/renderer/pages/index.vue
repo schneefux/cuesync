@@ -32,7 +32,7 @@
 
     <div class="h-48 pane border-primary-400 border-t-2">
       <match-result-pane
-        :tracks="tracks"
+        v-model="tracks"
         :source-name="sourceName"
         :target-name="targetName"
         class="h-full"

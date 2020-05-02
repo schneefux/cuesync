@@ -3,7 +3,7 @@
     <div class="w-5/6 flex flex-col">
       <h2 class="text-lg font-medium text-primary-500">Data to migrate from {{ sourceName }} to {{ targetName }}</h2>
       <div class="mt-2 flex-grow overflow-y-auto">
-        <track-table :tracks="tracks"></track-table>
+        <track-table :value="value" @input="v => $emit('input', v)" deletable></track-table>
       </div>
     </div>
 
@@ -23,7 +23,7 @@ import TrackTable from '@/components/TrackTable.vue'
 
 export default Vue.extend({
   props: {
-    tracks: {
+    value: {
       type: Array as PropType<TrackInfo[]>,
       required: true,
     },
