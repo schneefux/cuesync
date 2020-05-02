@@ -1,8 +1,14 @@
 <template>
-  <div class="flex flex-col">
-    <h2 class="text-lg font-medium text-primary-500">Cues to copy from Djay to Serato</h2>
-    <div class="mt-2 flex-grow overflow-y-auto">
-      <track-table :tracks="tracks"></track-table>
+  <div class="flex">
+    <div class="w-5/6 flex flex-col">
+      <h2 class="text-lg font-medium text-primary-500">Data to migrate from {{ sourceName }} to {{ targetName }}</h2>
+      <div class="mt-2 flex-grow overflow-y-auto">
+        <track-table :tracks="tracks"></track-table>
+      </div>
+    </div>
+
+    <div class="w-1/6 flex items-center justify-center">
+      <button class="button text-xl font-semibold tracking-wide">Sync</button>
     </div>
   </div>
 </template>
@@ -19,6 +25,14 @@ export default Vue.extend({
   props: {
     tracks: {
       type: Array as PropType<TrackInfo[]>,
+      required: true,
+    },
+    sourceName: {
+      type: String,
+      required: true,
+    },
+    targetName: {
+      type: String,
       required: true,
     },
   },

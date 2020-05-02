@@ -3,7 +3,13 @@
     <!-- flex-grow alone does not seem to work, so hard code header & south pane size into height -->
     <div class="flex-grow flex relative" style="height: calc(100vh - 16rem - 6rem)">
       <div class="w-1/2 h-full pane">
-        <library-pane :name="sourceName" class="h-full" :library="sourceLibrary" @select="selectSourceTrack" v-model="sourceTracks"></library-pane>
+        <library-pane
+          v-model="sourceTracks"
+          :name="sourceName"
+          :library="sourceLibrary"
+          class="h-full"
+          @select="selectSourceTrack"
+        ></library-pane>
       </div>
       <div class="absolute bottom-0 left-0 flex w-full justify-center -mb-5">
         <button @click="addTrack" class="bg-black rounded-full p-2">
@@ -11,15 +17,23 @@
         </button>
       </div>
       <div class="w-1/2 h-full pane border-primary-400 border-l-2">
-        <library-pane :name="targetName" class="h-full" :library="targetLibrary" @select="selectTargetTrack" v-model="targetTracks"></library-pane>
+        <library-pane
+          v-model="targetTracks"
+          :name="targetName"
+          :library="targetLibrary"
+          class="h-full"
+          @select="selectTargetTrack"
+        ></library-pane>
       </div>
     </div>
 
-    <div class="h-32 border-primary-400 border-t-2 flex">
-      <match-result-pane class="w-5/6 pane" :tracks="tracks"></match-result-pane>
-      <div class="w-1/6 pane flex items-center justify-center">
-        <button class="button text-xl font-semibold tracking-wide">Sync</button>
-      </div>
+    <div class="h-48 pane border-primary-400 border-t-2">
+      <match-result-pane
+        :tracks="tracks"
+        :source-name="sourceName"
+        :target-name="targetName"
+        class="h-full"
+      ></match-result-pane>
     </div>
   </div>
 </template>
