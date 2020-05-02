@@ -1,23 +1,22 @@
 <template>
-  <div>
-    <div class="w-full flex relative">
-      <div class="w-1/2 pane">
-        <djay-pane></djay-pane>
+  <div class="flex flex-col">
+    <!-- flex-grow alone does not seem to work, so hard code header & south pane size into height -->
+    <div class="flex-grow flex relative" style="height: calc(100vh - 16rem - 6rem)">
+      <div class="w-1/2 h-full pane">
+        <djay-pane class="h-full"></djay-pane>
       </div>
       <div class="absolute bottom-0 left-0 flex w-full justify-center -mb-5">
         <button @click="addTrack" class="bg-black rounded-full p-2">
           <i class="fas fa-arrow-circle-down fa-2x text-secondary-600"></i>
         </button>
       </div>
-      <div class="w-1/2 pane border-primary-400 border-l-2">
-        <serato-pane></serato-pane>
+      <div class="w-1/2 h-full pane border-primary-400 border-l-2">
+        <serato-pane class="h-full"></serato-pane>
       </div>
     </div>
 
-    <div class="w-full flex border-primary-400 border-t-2">
-      <div class="w-3/4 pane flex">
-        <match-result-pane></match-result-pane>
-      </div>
+    <div class="h-32 border-primary-400 border-t-2 flex">
+      <match-result-pane class="w-3/4 pane"></match-result-pane>
       <div class="w-1/4 pane flex items-center justify-center">
         <button class="button text-xl font-semibold tracking-wide">Sync</button>
       </div>

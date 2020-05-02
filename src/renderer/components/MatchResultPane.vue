@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="flex flex-col">
     <h2 class="text-lg font-medium text-primary-500">Cues to copy from Djay to Serato</h2>
-    <div class="mt-2 overflow-y-auto h-24">
+    <div class="mt-2 flex-grow overflow-y-auto">
       <track-table :value="tracks"></track-table>
     </div>
   </div>
