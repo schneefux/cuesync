@@ -11,9 +11,12 @@
           @select="selectSourceTrack"
         ></library-pane>
       </div>
-      <div class="absolute bottom-0 left-0 flex w-full justify-center -mb-5">
-        <button @click="addTrack" class="bg-black rounded-full p-2">
-          <i class="fas fa-arrow-circle-down fa-2x text-secondary-600"></i>
+      <div class="absolute bottom-0 left-0 flex flex-col w-full justify-center items-center -mb-8">
+        <button @click="magicMatchClicked" class="bg-black rounded-full p-2 m-1">
+          <i class="fas fa-magic fa-2x text-secondary-500"></i>
+        </button>
+        <button @click="addTrackClicked" class="bg-black rounded-full p-2 m-1">
+          <i class="fas fa-arrow-circle-down fa-2x text-secondary-500"></i>
         </button>
       </div>
       <div class="w-1/2 h-full pane border-primary-400 border-l-2">
@@ -47,6 +50,7 @@ import MatchResultPane from '@/components/MatchResultPane.vue'
 import TrackInfo from '../../../lib/model/TrackInfo'
 import DjayLibraryManager from '../../../lib/djay/DjayLibraryManager'
 import SeratoLibraryManager from '../../../lib/serato/SeratoLibraryManager'
+import { fuzzyTrackInfoEqual } from '../../../lib/compare'
 
 export default Vue.extend({
   components: {
@@ -70,16 +74,30 @@ export default Vue.extend({
     }
   },
   methods: {
-    addTrack() {
+    addTrackClicked() {
       if (this.sourceTrack !== undefined && this.targetTrack !== undefined) {
-        this.sourceTracks = this.sourceTracks.filter(t => t != this.sourceTrack)
-        this.targetTracks = this.targetTracks.filter(t => t != this.targetTrack)
-
-        this.tracks.push({
-          ...this.sourceTrack,
-          ...this.targetTrack,
-        })
+        this.addTrack(this.sourceTrack, this.targetTrack)
+        this.sourceTrack = undefined
+        this.targetTrack = undefined
       }
+    },
+    addTrack(sourceTrack: TrackInfo, targetTrack: TrackInfo) {
+      this.sourceTracks = this.sourceTracks.filter(t => t != sourceTrack)
+      this.targetTracks = this.targetTracks.filter(t => t != targetTrack)
+
+      this.tracks.push({
+        ...sourceTrack,
+        ...targetTrack,
+      })
+    },
+    magicMatchClicked() {
+      this.sourceTracks.forEach(source => {
+        this.targetTracks.forEach(target => {
+          if (fuzzyTrackInfoEqual(source, target)) {
+            this.addTrack(source, target)
+          }
+        })
+      })
     },
     selectSourceTrack(track: TrackInfo) {
       this.sourceTrack = track
