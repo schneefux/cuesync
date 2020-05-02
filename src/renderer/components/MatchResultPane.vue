@@ -2,13 +2,13 @@
   <div class="flex flex-col">
     <h2 class="text-lg font-medium text-primary-500">Cues to copy from Djay to Serato</h2>
     <div class="mt-2 flex-grow overflow-y-auto">
-      <track-table :value="tracks"></track-table>
+      <track-table :tracks="tracks"></track-table>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue, { PropType } from 'vue'
 import * as path from 'path'
 import * as os from 'os'
 import DjayLibraryManager from '@/../../lib/djay/DjayLibraryManager'
@@ -16,19 +16,14 @@ import TrackInfo from '../../../lib/model/TrackInfo'
 import TrackTable from '@/components/TrackTable.vue'
 
 export default Vue.extend({
+  props: {
+    tracks: {
+      type: Array as PropType<TrackInfo[]>,
+      required: true,
+    },
+  },
   components: {
     TrackTable,
-  },
-  data() {
-    return {
-      tracks: [{
-        artists: ['albzzy', 'sk'],
-        title: 'the conspiracy',
-        path: 'M:\\tekk\\Bis Ich Nichts Mehr Fühle-773649382.mp3',
-        filename: 'Bis Ich Nichts Mehr Fühle-773649382.mp3',
-        cues: [{ milliseconds: 1234 }],
-      }] as TrackInfo[],
-    }
   },
 })
 </script>
