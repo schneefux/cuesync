@@ -11,7 +11,7 @@
     "postinstall": "electron-builder install-app-deps"
   },
   "engines": {
-    "node": ">=13"
+    "node": ">=12.13.0"
   },
   "cmake-js": {
     "runtime": "electron"
@@ -21,6 +21,7 @@
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.13.0",
     "@fullhuman/postcss-purgecss": "^2.1.2",
+    "@jest-runner/electron": "^2.0.3",
     "@nuxt/typescript-build": "^0.6.6",
     "@types/glob": "^7.1.1",
     "@types/jest": "^25.2.1",
@@ -53,6 +54,6 @@
   },
   "dependencies": {
     "sass-loader": "^8.0.2",
-    "taglib3": "^3.0.7"
+    "taglib3": "^3.0.8"
   }
 }

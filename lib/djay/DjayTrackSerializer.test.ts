@@ -2,7 +2,7 @@ import TrackInfo from "../model/TrackInfo"
 import Cue from "../model/Cue"
 import DjayTrackSerializer from "./DjayTrackSerializer"
 
-const testTrack = { key: 'the conspiracy\talbzzy,sk\t274', value: { 'song.cuePoints': [ 42.797550201416016, 0, 0, 0, 0, 0, 0, 0 ] } }
+const testTrack = { key: 'the conspiracy\talbzzy, sk\t274', value: { 'song.cuePoints': [ 42.797550201416016, 0, 0, 0, 0, 0, 0, 0 ] } }
 const serializer = new DjayTrackSerializer()
 
 test('should deserialize track info', () => {

@@ -43,6 +43,10 @@ export default class SeratoMarkers2Frame implements Frame<SeratoMarker[]> {
   data: SeratoMarker[] = []
 
   decode(data: Buffer) {
+    if (data.length == 0) {
+      return
+    }
+
     // version
     this.versionMajor = data.readInt8(0)
     this.versionMinor = data.readInt8(1)

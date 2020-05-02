@@ -6,8 +6,9 @@ import LibraryManager from "../model/LibraryManager"
 import * as seratoCrater from 'serato-crater'
 import * as path from 'path'
 import TaglibInfo, { TaglibId3Info } from "../file/taglib/model/taglib"
-import { fuzzyTrackInfoMatchesPath } from "../compare"
+import { fuzzyTrackInfoEqual } from "../compare"
 import TrackInfo from "../model/TrackInfo"
+import * as fs from "fs"
 
 // TODO replace seratojs by own implementation
 // or try https://github.com/Rickgg/serato-crater
@@ -19,26 +20,41 @@ const writeTaglibTags = promisify(taglib.writeTags)
 const glob = promisify(globCb as any)
 
 export default class SeratoLibraryManager implements LibraryManager {
-  filePaths: string[] = []
+  tracks: TrackInfo[] = []
   serializer = new SeratoTrackSerializer()
 
   constructor(public rootPath: string) { }
 
   async load() {
-    this.filePaths = []
+    this.tracks = []
     const crates = await this.listCrates(this.rootPath)
     for (const cratePath of crates) {
       const songPaths = await this.listSongs(cratePath)
       // TODO filter duplicates
-      songPaths.forEach(s => this.filePaths.push(s))
+      for (const songPath of songPaths) {
+        try {
+          await fs.promises.access(songPath)
+        } catch (err) {
+          console.error('file does not exist', songPath) // TODO show error / handle in UI?
+          continue
+        }
+
+        try {
+          const data = await this.readSeratoData(songPath)
+          this.tracks.push({
+            path: songPath,
+            filename: path.basename(songPath),
+            ...data,
+          })
+        } catch (err) {
+          console.error('could not parse', songPath, err)
+        }
+      }
     }
   }
 
   list() {
-    return this.filePaths.map(fp => ({
-      path: fp,
-      filename: path.basename(fp),
-    } as TrackInfo))
+    return this.tracks
   }
 
   /**
@@ -68,19 +84,7 @@ export default class SeratoLibraryManager implements LibraryManager {
    * If a path is known, read Serato file data.
    */
   async find(trackInfo: TrackInfo) {
-    const trackPath = trackInfo.path || this.filePaths.find(p => fuzzyTrackInfoMatchesPath(trackInfo, p))
-
-    if (trackPath == undefined) {
-      return {}
-    }
-
-    const filename = path.basename(trackPath)
-    const info = await this.readSeratoData(trackPath)
-    return {
-      filename,
-      path: trackPath,
-      ...info,
-    }
+    return this.tracks.find(t => fuzzyTrackInfoEqual(trackInfo, t)) || null
   }
 
   async update(trackInfo: TrackInfo) {

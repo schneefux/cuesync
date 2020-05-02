@@ -20,7 +20,7 @@ export default class DjayTrackSerializer implements TrackSerializer<DjaySongInfo
 
     const trackInfo = {
       title,
-      artists: artists.split(','),
+      artists: artists.split(', '),
       cues,
       durationSeconds: parseInt(duration),
     } as TrackInfo
@@ -48,7 +48,7 @@ export default class DjayTrackSerializer implements TrackSerializer<DjaySongInfo
       throw new Error('cannot serialize track')
     }
 
-    const key = [trackInfo.title, trackInfo.artists.join(','), trackInfo.durationSeconds]
+    const key = [trackInfo.title, trackInfo.artists.join(', '), trackInfo.durationSeconds]
       .join('\t')
       .toLowerCase()
     const cueSecondsByIndex = trackInfo.cues.reduce((obj, cue) => ({ ...obj, [cue.index]: cue.milliseconds / 1000 }), {})

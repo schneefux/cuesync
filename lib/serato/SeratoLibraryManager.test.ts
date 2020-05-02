@@ -95,17 +95,18 @@ test('should detect crate', async () => {
 })
 
 test('should parse crate', async () => {
-  const songs = await library.listSongs(path.join(fixtures, '_Serato_', 'Subcrates', 'tekk.crate'))
-  expect(songs[0]).toBe(path.join(path.resolve(fixtures), 'tekk', 'Bis Ich Nichts Mehr Fühle-773649382.mp3'))
+  const songs = await library.listSongs(path.join(fixtures, '_Serato_', 'Subcrates', 'fixtures.crate'))
+  expect(songs[0]).toBe(path.join(path.resolve(fixtures), 'retro_funky.flac'))
 })
 
-test('should cache crate contents', async () => {
+test('should cache tracks', async () => {
   const library = new SeratoLibraryManager(fixtures)
   await library.load()
   const tracks = await library.list()
-  expect(tracks.length).toBe(34)
+  expect(tracks.length).toBe(3)
   expect(tracks[0]).toMatchObject({
-    path: 'M:\\deezloader\\music\\dj_dnb_jumpup\\Aftershock',
-    filename: 'Aftershock CD 1 TRACK 1 (FLAC).flac',
+    path: 'P:\\cuemigrator\\fixtures\\retro_funky.flac',
+    filename: 'retro_funky.flac',
   })
+  expect(tracks[0].cues).not.toBe(undefined)
 })
