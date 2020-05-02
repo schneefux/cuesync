@@ -41,7 +41,7 @@ export default Vue.extend({
   data() {
     const id = x => x
     return {
-      selection: undefined as TrackInfo,
+      selection: null as TrackInfo|null,
       formatters: {
         'title': id,
         'artists': x => x == undefined ? '' : x.join(', '),

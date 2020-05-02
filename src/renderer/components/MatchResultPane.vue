@@ -8,7 +8,7 @@
     </div>
 
     <div class="w-1/6 flex items-center justify-center">
-      <button class="button text-xl font-semibold tracking-wide">Sync</button>
+      <button class="button text-xl font-semibold tracking-wide" @click="$emit('sync')">Sync</button>
     </div>
   </div>
 </template>

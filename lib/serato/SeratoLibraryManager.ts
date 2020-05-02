@@ -90,10 +90,10 @@ export default class SeratoLibraryManager implements LibraryManager {
     if (trackInfo.path === undefined) {
       throw new Error('track info path is undefined')
     }
-    this.writeSeratoData(trackInfo.path, trackInfo)
 
     const taglibTags = this.taglibSerializer.serialize(trackInfo)
     await writeTaglibTags(trackInfo.path, taglibTags)
+    await this.writeSeratoData(trackInfo.path, trackInfo)
   }
 
   /**

@@ -36,6 +36,7 @@
         :source-name="sourceName"
         :target-name="targetName"
         class="h-full"
+        @sync="syncTracksClicked"
       ></match-result-pane>
     </div>
   </div>
@@ -64,30 +65,32 @@ export default Vue.extend({
     return {
       sourceName: 'Djay',
       sourceLibrary: new DjayLibraryManager(djayLibraryPath),
-      sourceTrack: undefined as TrackInfo,
+      sourceTrack: null as TrackInfo|null,
       sourceTracks: [] as TrackInfo[],
       targetName: 'Serato',
       targetLibrary: new SeratoLibraryManager(seratoCratePath),
-      targetTrack: undefined as TrackInfo,
+      targetTrack: null as TrackInfo|null,
       targetTracks: [] as TrackInfo[],
       tracks: [] as TrackInfo[],
     }
   },
   methods: {
     addTrackClicked() {
-      if (this.sourceTrack !== undefined && this.targetTrack !== undefined) {
+      if (this.sourceTrack !== null && this.targetTrack !== null) {
         this.addTrack(this.sourceTrack, this.targetTrack)
-        this.sourceTrack = undefined
-        this.targetTrack = undefined
+        this.sourceTrack = null
+        this.targetTrack = null
       }
     },
     addTrack(sourceTrack: TrackInfo, targetTrack: TrackInfo) {
       this.sourceTracks = this.sourceTracks.filter(t => t != sourceTrack)
       this.targetTracks = this.targetTracks.filter(t => t != targetTrack)
 
+      // add non-existant attributes & overwrite cues
       this.tracks.push({
         ...sourceTrack,
         ...targetTrack,
+        cues: sourceTrack.cues,
       })
     },
     magicMatchClicked() {
@@ -104,6 +107,12 @@ export default Vue.extend({
     },
     selectTargetTrack(track: TrackInfo) {
       this.targetTrack = track
+    },
+    async syncTracksClicked() {
+      for (const track of this.tracks) {
+        await this.targetLibrary.update(track)
+        this.tracks = this.tracks.filter(t => t !== track)
+      }
     },
   },
 })

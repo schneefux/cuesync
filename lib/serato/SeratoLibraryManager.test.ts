@@ -64,6 +64,9 @@ test('should write Serato data to flac', async () => {
     "SERATO_RELVOL": ["YXBwbGljYXRpb24vb2N0ZXQtc3RyZWFtAABTZXJhdG8gUmVsVm9sQWQAAQEBAAAA"],
     "SERATO_VIDEO_ASSOC": ["YXBwbGljYXRpb24vb2N0ZXQtc3RyZWFtAABTZXJhdG8gVmlkQXNzb2MAAQEBAAAA"],
   })
+
+  const data = await library.readSeratoData(fixtures + 'tmp/retro_funky.flac')
+  expect(data).toBeDefined()
 })
 
 test('should write Serato data to mp3', async () => {
@@ -87,6 +90,9 @@ test('should write Serato data to mp3', async () => {
     /* "Serato Offsets_": "...", */
     /* "Serato Overview": "...", */
   })
+
+  const data = await library.readSeratoData(fixtures + 'tmp/retro_funky.mp3')
+  expect(data).toBeDefined()
 })
 
 test('should detect crate', async () => {
@@ -153,7 +159,7 @@ test('should write track info to mp3', async () => {
   })
 })
 
-test('should write Serato data to flac', async () => {
+test('should write track info to flac', async () => {
   await copyFile(fixtures + 'retro_funky.flac', fixtures + 'tmp/retro_funky.flac')
 
   await library.update({
