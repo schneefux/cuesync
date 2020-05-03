@@ -14,7 +14,7 @@ test('should read Serato data from mp3', async () => {
 
   expect(trackInfo).toMatchObject({
     cues: [
-      { color: "#cc0000", index: 0, milliseconds: 27885 },
+      { color: "#cc0000", index: 0, milliseconds: 27885, name: 'start of track ♥' },
       { color: "#0000cc", index: 2, milliseconds: 88821 },
       { color: "#cccc00", index: 3, milliseconds: 162839 },
     ]
@@ -38,7 +38,7 @@ test('should write Serato data to flac', async () => {
 
   await library.writeSeratoData(path.join(fixtures, 'tmp', 'retro_funky.flac'), {
     cues: [
-      { color: "#cc8800", index: 5, milliseconds: 23060 },
+      { color: "#cc8800", index: 5, milliseconds: 23060, name: 'start of track ♥' },
       { color: "#cc00cc", index: 6, milliseconds: 94993 },
       { color: "#8800cc", index: 7, milliseconds: 121151 },
     ]
@@ -50,8 +50,8 @@ test('should write Serato data to flac', async () => {
     "SERATO_AUTOGAIN": ["YXBwbGljYXRpb24vb2N0ZXQtc3RyZWFtAABTZXJhdG8gQXV0b3RhZ3MAAQExMTUuMDAALTMu\n" + "MjQ1ADAuMDAwAA"],
     "SERATO_BEATGRID": ["YXBwbGljYXRpb24vb2N0ZXQtc3RyZWFtAABTZXJhdG8gQmVhdEdyaWQAAQAAAAABPoJ8yULm\n" + "AABBP"],
     "SERATO_MARKERS_V2": ["YXBwbGljYXRpb24vb2N0ZXQtc3RyZWFtAABTZXJhdG8gTWFya2VyczIAAQFBUUZEVlVVQUFB\n" +
-      "QUFEUUFGQUFCYUZBRE1pQUFBQUFCRFZVVUFBQUFBRFFBR0FBRnpFUURNQU13QUFBQkRWVVVB\n" +
-      "QUFBQURRQUgKQUFIWlB3Q0lBTXdBQUFBQQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n" +
+      "QUFIUUFGQUFCYUZBRE1pQUFBYzNSaGNuUWdiMllnZEhKaFkyc2c0cG1sUTFWRkFBQUFBQTBB\n" +
+      "QmdBQmN4RUEKekFETUFBQUFRMVZGQUFBQUFBMEFCd0FCMlQ4QWlBRE1BQUFBQUE9PQAAAAAA\n" +
       "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n" +
       "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n" +
       "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n" +

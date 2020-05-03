@@ -33,6 +33,7 @@ export default class SeratoTrackSerializer implements TrackSerializer<FrameMap> 
           index: cueMarker.index,
           color: cueMarker.color,
           milliseconds: cueMarker.milliseconds,
+          name: cueMarker.name,
         }))
 
       const bpmLock = markers2.data
@@ -69,7 +70,8 @@ export default class SeratoTrackSerializer implements TrackSerializer<FrameMap> 
       const cueMarker = Object.assign(new SeratoCueMarker(), {
         index: cue.index || index,
         milliseconds: cue.milliseconds,
-        color: cue.color || '#ff0000'
+        color: cue.color || '#ff0000',
+        name: cue.name || '',
       })
 
       markers2.data.push(cueMarker)

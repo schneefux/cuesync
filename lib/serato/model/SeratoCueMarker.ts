@@ -5,11 +5,14 @@ import SeratoMarker from "./SeratoMarker"
  */
 export default class SeratoCueMarker implements SeratoMarker {
   id = 'CUE'
-  size = 13
   index: number = 0
   milliseconds: number = 0
   color: string = '#ffffff'
-  // TODO add name
+  name: string = ''
+
+  get size() {
+    return 1 + 1 + 4 + 1 + 3 + 2 + this.name.length + 1
+  }
 
   decode(buf: Buffer) {
     // \x00
@@ -19,7 +22,9 @@ export default class SeratoCueMarker implements SeratoMarker {
     // rgb
     this.color = '#' + buf.slice(7, 10).toString('hex')
     // \x00
-    // optional: name + \x00
+    // optional:
+    this.name = buf.slice(12, buf.length - 1).toString()
+    // \x00
   }
 
   encode() {
@@ -27,6 +32,7 @@ export default class SeratoCueMarker implements SeratoMarker {
     buf.writeUInt8(this.index, 1)
     buf.writeUInt32BE(this.milliseconds, 2)
     Buffer.from(this.color.slice(1), 'hex').copy(buf, 7)
+    Buffer.from(this.name).copy(buf, 11)
     return buf
   }
 }

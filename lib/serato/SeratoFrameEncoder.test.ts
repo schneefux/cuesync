@@ -50,26 +50,26 @@ test('should encode to Serato Makers 2 frame', () => {
 
   frame.data.push(Object.assign(new SeratoCueMarker(), {
     id: 'CUE',
-    size: 13,
     index: 0,
     milliseconds: 0,
     color: '#cc0000',
+    name: '',
   }))
 
   frame.data.push(Object.assign(new SeratoCueMarker(), {
     id: 'CUE',
-    size: 13,
     index: 1,
     milliseconds: 5737,
     color: '#cc8800',
+    name: '',
   }))
 
   frame.data.push(Object.assign(new SeratoCueMarker(), {
     id: 'CUE',
-    size: 13,
     index: 3,
     milliseconds: 107107,
     color: '#cccc00',
+    name: '',
   }))
 
   frame.data.push(Object.assign(new SeratoBpmLockMarker(), {

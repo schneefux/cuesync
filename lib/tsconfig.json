@@ -2,7 +2,8 @@
   "compilerOptions": {
     "outDir": "dist",
     "noImplicitAny": false,
-    "strict": true
+    "strict": true,
+    "target": "esnext"
   },
   "types": ["jest"],
   "include": [
