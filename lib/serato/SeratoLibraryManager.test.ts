@@ -128,6 +128,7 @@ test('should read track info from mp3', async () => {
     "isrc": "NLPM11407110",
     "key": "Em",
     "title": "Retro Funky (SUNDANCE Remix)",
+    "durationSeconds": 213,
   })
 })
 
@@ -142,6 +143,7 @@ test('should read track info from flac', async () => {
     "isrc": "NLPM11407110",
     "key": "Em",
     "title": "Retro Funky (SUNDANCE Remix)",
+    "durationSeconds": 213,
   })
 })
 

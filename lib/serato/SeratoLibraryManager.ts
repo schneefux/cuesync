@@ -5,7 +5,7 @@ import SeratoTrackSerializer, { FrameMap } from "./SeratoTrackSerializer"
 import LibraryManager from "../model/LibraryManager"
 import * as seratoCrater from 'serato-crater'
 import * as path from 'path'
-import TaglibInfo, { TaglibId3Info } from "./taglib/model/taglib"
+import TaglibInfo, { TaglibId3Info, TaglibAudioProperties } from "./taglib/model/taglib"
 import { fuzzyTrackInfoEqual } from "../compare"
 import TrackInfo from "../model/TrackInfo"
 import * as fs from "fs"
@@ -18,6 +18,7 @@ const readId3Tags = promisify(taglib.readId3Tags)
 const writeId3Tags = promisify(taglib.writeId3Tags)
 const readTaglibTags = promisify(taglib.readTags)
 const writeTaglibTags = promisify(taglib.writeTags)
+const readAudioProperties = promisify(taglib.readAudioProperties)
 const glob = promisify(globCb as any)
 
 export default class SeratoLibraryManager implements LibraryManager {
@@ -100,14 +101,15 @@ export default class SeratoLibraryManager implements LibraryManager {
    * Load a track and all its attributes from the file system.
    */
   async loadTrack(trackPath: string): Promise<TrackInfo> {
-    // TODO avoid duplicate readTaglibTags call
     const seratoData = await this.readSeratoData(trackPath)
     const tags = await readTaglibTags(trackPath) as TaglibInfo
+    const audioProperties = await readAudioProperties(trackPath) as TaglibAudioProperties
     const taglibData = this.taglibSerializer.deserialize(tags)
 
     return {
       path: trackPath,
       filename: path.basename(trackPath),
+      durationSeconds: parseInt(audioProperties.length),
       ...seratoData,
       ...taglibData,
     }

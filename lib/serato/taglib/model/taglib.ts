@@ -5,3 +5,9 @@ export default interface TaglibInfo {
 export interface TaglibId3Info {
   [key: string]: string
 }
+
+export interface TaglibAudioProperties {
+  length: string
+  channels: string
+  bitrate: string
+}

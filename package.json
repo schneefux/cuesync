@@ -54,6 +54,6 @@
   },
   "dependencies": {
     "sass-loader": "^8.0.2",
-    "taglib3": "^3.0.8"
+    "taglib3": "^3.0.9"
   }
 }

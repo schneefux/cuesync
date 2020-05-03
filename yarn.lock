@@ -11717,10 +11717,10 @@ symbol-tree@^3.2.2:
   resolved "https://registry.yarnpkg.com/symbol-tree/-/symbol-tree-3.2.4.tgz#430637d248ba77e078883951fb9aa0eed7c63fa2"
   integrity sha512-9QNk5KwDF+Bvz+PyObkmSYjI5ksVUYtjW7AU22r2NKcfLJcXp96hkDWU3+XndOsUb+AQ9QhfzfCT2O+CNWT5Tw==
 
-taglib3@^3.0.8:
-  version "3.0.8"
-  resolved "https://registry.yarnpkg.com/taglib3/-/taglib3-3.0.8.tgz#eb630c7e934561e1259f421285ebcbadecf48389"
-  integrity sha512-IP3c/ldLhcWXyKH3pc1TAxAM/JeMF8HQAE049IH+5i49WyXgOnyv8E7KrQTbmDDMSzvJ8fEtwEodou2rnwuLwg==
+taglib3@^3.0.9:
+  version "3.0.9"
+  resolved "https://registry.yarnpkg.com/taglib3/-/taglib3-3.0.9.tgz#42a9e4b0232066e70e6a80f341b74e37d9fb9454"
+  integrity sha512-6XJS2Gd1UBFDU/TZ0wsaS6BkWbOL4kf/HQIUvz27MAgdm+Oa0ZLVgj7Zs3p+m8rThYjdUvFPbshFgcQcQ7f1zg==
   dependencies:
     async-lock "^1.2.2"
     cmake-js "^6.1.0"
