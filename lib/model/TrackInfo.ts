@@ -6,6 +6,8 @@ export default interface TrackInfo {
   artists?: string[]
   cues?: Cue[]
   bpm?: number
+  bpmLock?: boolean
+  color?: string
   durationSeconds?: number
   songStart?: number
   path?: string

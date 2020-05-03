@@ -15,6 +15,6 @@ export default class SeratoBpmLockMarker implements SeratoMarker {
   }
 
   encode() {
-    return Buffer.from('\x01')
+    return Buffer.from(this.isActive ? '\x01' : '\x00')
   }
 }

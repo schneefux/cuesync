@@ -9,6 +9,7 @@ export default class SeratoCueMarker implements SeratoMarker {
   index: number = 0
   milliseconds: number = 0
   color: string = '#ffffff'
+  // TODO add name
 
   decode(buf: Buffer) {
     // \x00
@@ -18,6 +19,7 @@ export default class SeratoCueMarker implements SeratoMarker {
     // rgb
     this.color = '#' + buf.slice(7, 10).toString('hex')
     // \x00
+    // optional: name + \x00
   }
 
   encode() {

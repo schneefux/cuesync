@@ -38,8 +38,8 @@ export default class SeratoMarkers2Frame implements Frame<SeratoMarker[]> {
   filename = ''
   id = 'Serato Markers2'
   size = 512
-  versionMajor: number = 0
-  versionMinor: number = 0
+  versionMajor: number = 1
+  versionMinor: number = 1
   data: SeratoMarker[] = []
 
   decode(data: Buffer) {
@@ -80,9 +80,9 @@ export default class SeratoMarkers2Frame implements Frame<SeratoMarker[]> {
   }
 
   encode(): Buffer {
-    const bufSize = 2 + 1 + this.data
+    const bufSize = 2 + this.data
       .map(marker => marker.id.length + 1 + 4 + marker.size)
-      .reduce((sum, s) => sum + s, 0)
+      .reduce((sum, s) => sum + s, 0) + 1
     const buf = Buffer.alloc(bufSize)
     // starts with \x0101
     buf.writeUInt8(1, 0)
@@ -104,7 +104,6 @@ export default class SeratoMarkers2Frame implements Frame<SeratoMarker[]> {
     let size = 0
     size += 2 // version
     size += content.length
-    size += 1 // \x00
     const wrapper = Buffer.alloc(size)
     wrapper.writeUInt8(this.versionMajor, 0)
     wrapper.writeUInt8(this.versionMinor, 1)
