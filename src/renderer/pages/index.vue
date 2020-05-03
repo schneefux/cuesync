@@ -7,6 +7,7 @@
           v-model="sourceTracks"
           :name="sourceName"
           :library="sourceLibrary"
+          :selection="sourceTrack"
           class="h-full"
           @select="selectSourceTrack"
         ></library-pane>
@@ -24,6 +25,7 @@
           v-model="targetTracks"
           :name="targetName"
           :library="targetLibrary"
+          :selection="targetTrack"
           class="h-full"
           @select="selectTargetTrack"
         ></library-pane>
@@ -104,6 +106,8 @@ export default Vue.extend({
     },
     selectSourceTrack(track: TrackInfo) {
       this.sourceTrack = track
+
+      this.targetTrack = this.targetTracks.find(target => fuzzyTrackInfoEqual(track, target)) || null
     },
     selectTargetTrack(track: TrackInfo) {
       this.targetTrack = track

@@ -33,6 +33,10 @@ export default Vue.extend({
       type: Array as PropType<TrackInfo[]>,
       required: true,
     },
+    selection: {
+      type: Object as PropType<TrackInfo|null>,
+      default: null,
+    },
     deletable: {
       type: Boolean,
       default: false,
@@ -41,7 +45,6 @@ export default Vue.extend({
   data() {
     const id = x => x
     return {
-      selection: null as TrackInfo|null,
       formatters: {
         'title': id,
         'artists': x => x == undefined ? '' : x.join(', '),
@@ -72,7 +75,6 @@ export default Vue.extend({
   },
   methods: {
     select(track: TrackInfo) {
-      this.selection = track
       this.$emit('select', track)
     },
     remove(track: TrackInfo) {

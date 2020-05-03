@@ -2,7 +2,7 @@
   <div class="flex flex-col">
     <h2 class="text-lg font-medium text-primary-500">{{ name }} Library</h2>
     <div class="mt-2 flex-grow overflow-y-auto">
-      <track-table v-model="value" @select="t => $emit('select', t)"></track-table>
+      <track-table v-model="value" :selection="selection" @select="t => $emit('select', t)"></track-table>
     </div>
   </div>
 </template>
@@ -21,6 +21,10 @@ export default Vue.extend({
     value: {
       type: Array as PropType<TrackInfo[]>,
       required: true,
+    },
+    selection: {
+      type: Object as PropType<TrackInfo|null>,
+      default: null,
     },
     name: {
       type: String,
