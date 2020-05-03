@@ -3,7 +3,7 @@
     <thead>
       <tr>
         <th class="text-left capitalize" v-for="col in columns" :key="col">{{ col }}</th>
-        <th v-if="deletable"></th>
+        <th v-if="deletable" v-show="value.length > 0">Remove</th>
       </tr>
     </thead>
     <tbody>
@@ -14,8 +14,8 @@
         class="cursor-pointer"
         @click="select(track)"
       >
-        <td v-for="col in columns" :key="track.path + col">{{ formatters[col](track[col]) }}</td>
-        <td v-if="deletable" @click="remove(track)">
+        <td v-for="col in columns" :key="track.path + col" :class="`col--${col}`">{{ formatters[col](track[col]) }}</td>
+        <td v-if="deletable" @click="remove(track)" class="text-center">
           <i class="fas fa-trash"></i>
         </td>
       </tr>
@@ -83,3 +83,13 @@ export default Vue.extend({
   },
 })
 </script>
+
+<style lang="scss" scoped>
+td,th {
+  @apply px-2;
+}
+
+.col--cues {
+  @apply text-center;
+}
+</style>
