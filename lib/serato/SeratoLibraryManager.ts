@@ -55,6 +55,14 @@ export default class SeratoLibraryManager implements LibraryManager {
     return this.tracks
   }
 
+  attributes() {
+    const keys: (keyof TrackInfo)[] = ['title', 'album', 'artists',
+      'cues', 'bpm', 'bpmLock', 'color',
+      'durationSeconds', 'path', 'filename',
+      'isrc', 'key', 'genre']
+    return keys
+  }
+
   /**
    * Find all crates under the given root path.
    */

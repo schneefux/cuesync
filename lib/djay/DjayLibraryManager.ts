@@ -27,6 +27,12 @@ export default class DjayLibraryManager implements LibraryManager {
     return this.tracks
   }
 
+  attributes() {
+    const keys: (keyof TrackInfo)[] = ['title', 'artists',
+      'cues', 'bpm', 'durationSeconds', 'key', 'songStart']
+    return keys
+  }
+
   find(trackInfoStub: TrackInfo) {
     // TODO is it possible to read paths for local files?
     return this.tracks.find(t => fuzzyTrackInfoEqual(t, trackInfoStub)) || null

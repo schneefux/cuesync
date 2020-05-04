@@ -12,6 +12,11 @@ export default interface LibraryManager {
   list(): TrackInfo[]
 
   /**
+   * Return a list of all supported TrackInfo keys.
+   */
+  attributes(): (keyof TrackInfo)[]
+
+  /**
    * Search a similar track from memory
    * and load additional attributes if available.
    */

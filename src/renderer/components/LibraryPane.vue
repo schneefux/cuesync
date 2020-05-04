@@ -2,7 +2,14 @@
   <div class="flex flex-col">
     <h2 class="text-lg font-medium text-primary-500">{{ name }} Library</h2>
     <div class="mt-2 flex-grow overflow-y-auto">
-      <track-table v-model="value" :selection="selection" @select="t => $emit('select', t)"></track-table>
+      <track-table
+        v-model="value"
+        :columns="library.attributes()"
+        :selection="selection"
+        :default-columns="['title', 'artists', 'cues']"
+        @select="t => $emit('select', t)"
+        selectable
+      ></track-table>
     </div>
   </div>
 </template>

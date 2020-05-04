@@ -3,12 +3,18 @@
     <div class="w-5/6 flex flex-col">
       <h2 class="text-lg font-medium text-primary-500">Data to migrate from {{ sourceName }} to {{ targetName }}</h2>
       <div class="mt-2 flex-grow overflow-y-auto">
-        <track-table :value="value" @input="v => $emit('input', v)" deletable></track-table>
+        <track-table
+          :columns="targetLibrary.attributes()"
+          :value="value"
+          :default-columns="['title', 'artists', 'cues']"
+          @input="v => $emit('input', v)"
+          deletable
+        ></track-table>
       </div>
     </div>
 
     <div class="w-1/6 flex items-center justify-center">
-      <button class="button text-xl font-semibold tracking-wide" @click="$emit('sync')">Sync</button>
+      <button class="button text-xl font-semibold tracking-wide" @click="syncTracksClicked">Sync</button>
     </div>
   </div>
 </template>
@@ -20,6 +26,7 @@ import * as os from 'os'
 import DjayLibraryManager from '@/../../lib/djay/DjayLibraryManager'
 import TrackInfo from '../../../lib/model/TrackInfo'
 import TrackTable from '@/components/TrackTable.vue'
+import LibraryManager from '../../../lib/model/LibraryManager'
 
 export default Vue.extend({
   props: {
@@ -35,9 +42,21 @@ export default Vue.extend({
       type: String,
       required: true,
     },
+    targetLibrary: {
+      type: Object as PropType<LibraryManager>,
+      required: true,
+    },
   },
   components: {
     TrackTable,
   },
+  methods: {
+    async syncTracksClicked() {
+      for (const track of this.tracks) {
+        await this.targetLibrary.update(track)
+        this.$emit('input', this.tracks.filter(t => t !== track))
+      }
+    },
+  }
 })
 </script>

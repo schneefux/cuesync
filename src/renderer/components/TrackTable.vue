@@ -2,7 +2,7 @@
   <table>
     <thead>
       <tr>
-        <th class="text-left capitalize" v-for="col in columns" :key="col">{{ col }}</th>
+        <th class="text-left capitalize" v-for="col in visibleColumns" :key="col">{{ col }}</th>
         <th v-if="deletable" v-show="value.length > 0">Remove</th>
       </tr>
     </thead>
@@ -10,12 +10,13 @@
       <tr
         v-for="track in value"
         :key="track.path"
-        :class="{ 'bg-background-400': track == selection }"
-        class="cursor-pointer"
-        @click="select(track)"
+        :class="{ 'bg-background-400': track == selection, 'cursor-pointer': selectable }"
+        @click="selectable ? select(track) : null"
       >
-        <td v-for="col in columns" :key="track.path + col" :class="`col--${col}`">{{ formatters[col](track[col]) }}</td>
-        <td v-if="deletable" @click="remove(track)" class="text-center">
+        <td v-for="col in visibleColumns" :key="track.path + col" :class="`col--${col}`">
+          {{ col in formatters ? formatters[col](track[col]) : track[col] }}
+        </td>
+        <td v-if="deletable" @click="remove(track)" class="text-center cursor-pointer">
           <i class="fas fa-trash"></i>
         </td>
       </tr>
@@ -37,41 +38,33 @@ export default Vue.extend({
       type: Object as PropType<TrackInfo|null>,
       default: null,
     },
+    columns: {
+      type: Array as PropType<Array<keyof TrackInfo>>,
+      required: true,
+    },
+    defaultColumns: {
+      type: Array as PropType<Array<keyof TrackInfo>>,
+      default() {
+        return this.columns
+      },
+    },
     deletable: {
+      type: Boolean,
+      default: false,
+    },
+    selectable: {
       type: Boolean,
       default: false,
     },
   },
   data() {
-    const id = x => x
     return {
       formatters: {
-        'title': id,
         'artists': x => x == undefined ? '' : x.join(', '),
-        'filename': id,
         'cues': x => x == undefined ? '' : x.length > 0 ? '✔️' : '❌'
-      }
+      },
+      visibleColumns: this.defaultColumns.filter(c => this.columns.includes(c)),
     }
-  },
-  computed: {
-    columns() {
-      const cols = [] as string[]
-
-      if(this.value.some(t => t.artists !== undefined)) {
-        cols.push('artists')
-      }
-      if(this.value.some(t => t.title !== undefined)) {
-        cols.push('title')
-      }
-      if(this.value.some(t => t.filename !== undefined)) {
-        cols.push('filename')
-      }
-      if(this.value.some(t => t.cues !== undefined)) {
-        cols.push('cues')
-      }
-
-      return cols
-    },
   },
   methods: {
     select(track: TrackInfo) {

@@ -37,8 +37,8 @@
         v-model="tracks"
         :source-name="sourceName"
         :target-name="targetName"
+        :target-library="targetLibrary"
         class="h-full"
-        @sync="syncTracksClicked"
       ></match-result-pane>
     </div>
   </div>
@@ -111,12 +111,6 @@ export default Vue.extend({
     },
     selectTargetTrack(track: TrackInfo) {
       this.targetTrack = track
-    },
-    async syncTracksClicked() {
-      for (const track of this.tracks) {
-        await this.targetLibrary.update(track)
-        this.tracks = this.tracks.filter(t => t !== track)
-      }
     },
   },
 })
