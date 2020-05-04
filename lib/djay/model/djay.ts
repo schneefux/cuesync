@@ -10,6 +10,7 @@ export interface DjaySongEntry {
   'song.manualBpm'?: number
   'song.manualKey'?: number
   'song.songStart'?: number
+  'song.manualGridStartPoint'?: number
 }
 
 /**
