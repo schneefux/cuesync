@@ -42,9 +42,5 @@ export default Vue.extend({
       required: true,
     },
   },
-  async created() {
-    await this.library.load()
-    this.$emit('input', this.library.list())
-  },
 })
 </script>

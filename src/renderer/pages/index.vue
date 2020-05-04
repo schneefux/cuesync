@@ -7,7 +7,7 @@
           v-model="sourceTracks"
           :name="sourceName"
           :library="sourceLibrary"
-          :selection="sourceTrack"
+          :selection="selectedSourceTrack"
           class="h-full"
           @select="selectSourceTrack"
         ></library-pane>
@@ -22,10 +22,10 @@
       </div>
       <div class="w-1/2 h-full pane border-primary-400 border-l-2">
         <library-pane
-          v-model="targetTracks"
+          v-model="filteredTargetTracks"
           :name="targetName"
           :library="targetLibrary"
-          :selection="targetTrack"
+          :selection="selectedTargetTrack"
           class="h-full"
           @select="selectTargetTrack"
         ></library-pane>
@@ -34,7 +34,7 @@
 
     <div class="h-48 pane border-primary-400 border-t-2">
       <match-result-pane
-        v-model="tracks"
+        v-model="matchedTracks"
         :source-name="sourceName"
         :target-name="targetName"
         :target-library="targetLibrary"
@@ -53,12 +53,16 @@ import MatchResultPane from '@/components/MatchResultPane.vue'
 import TrackInfo from '../../../lib/model/TrackInfo'
 import DjayLibraryManager from '../../../lib/djay/DjayLibraryManager'
 import SeratoLibraryManager from '../../../lib/serato/SeratoLibraryManager'
-import { fuzzyTrackInfoEqual } from '../../../lib/compare'
+import { fuzzyTrackInfoEqual, fuzzyTrackInfoCandidate } from '../../../lib/compare'
 
 export default Vue.extend({
   components: {
     LibraryPane,
     MatchResultPane,
+  },
+  async created() {
+    await this.sourceLibrary.load()
+    await this.targetLibrary.load()
   },
   data() {
     const seratoCratePath = 'M:\\'
@@ -67,37 +71,45 @@ export default Vue.extend({
     return {
       sourceName: 'Djay',
       sourceLibrary: new DjayLibraryManager(djayLibraryPath),
-      sourceTrack: null as TrackInfo|null,
-      sourceTracks: [] as TrackInfo[],
+      selectedSourceTrack: null as TrackInfo|null,
       targetName: 'Serato',
       targetLibrary: new SeratoLibraryManager(seratoCratePath),
-      targetTrack: null as TrackInfo|null,
-      targetTracks: [] as TrackInfo[],
-      tracks: [] as TrackInfo[],
+      selectedTargetTrack: null as TrackInfo|null,
+      matchedTracks: [] as TrackInfo[],
     }
+  },
+  computed: {
+    sourceTracks() {
+      return this.sourceLibrary.list()
+    },
+    filteredTargetTracks() {
+      if (this.selectedSourceTrack == null) {
+        return []
+      }
+
+      return this.targetLibrary.list()
+        .filter(t => fuzzyTrackInfoCandidate(t, this.selectedSourceTrack))
+    },
   },
   methods: {
     addTrackClicked() {
-      if (this.sourceTrack !== null && this.targetTrack !== null) {
-        this.addTrack(this.sourceTrack, this.targetTrack)
-        this.sourceTrack = null
-        this.targetTrack = null
+      if (this.selectedSourceTrack !== null && this.selectedTargetTrack !== null) {
+        this.addTrack(this.selectedSourceTrack, this.selectedTargetTrack)
+        this.selectedSourceTrack = null
+        this.selectedTargetTrack = null
       }
     },
-    addTrack(sourceTrack: TrackInfo, targetTrack: TrackInfo) {
-      this.sourceTracks = this.sourceTracks.filter(t => t != sourceTrack)
-      this.targetTracks = this.targetTracks.filter(t => t != targetTrack)
-
+    addTrack(selectedSourceTrack: TrackInfo, selectedTargetTrack: TrackInfo) {
       // add non-existant attributes & overwrite cues
-      this.tracks.push({
-        ...sourceTrack,
-        ...targetTrack,
-        cues: sourceTrack.cues,
+      this.matchedTracks.push({
+        ...selectedSourceTrack,
+        ...selectedTargetTrack,
+        cues: selectedSourceTrack.cues,
       })
     },
     magicMatchClicked() {
-      this.sourceTracks.forEach(source => {
-        this.targetTracks.forEach(target => {
+      this.sourceLibrary.list().forEach(source => {
+        this.targetLibrary.list().forEach(target => {
           if (fuzzyTrackInfoEqual(source, target)) {
             this.addTrack(source, target)
           }
@@ -105,12 +117,16 @@ export default Vue.extend({
       })
     },
     selectSourceTrack(track: TrackInfo) {
-      this.sourceTrack = track
-
-      this.targetTrack = this.targetTracks.find(target => fuzzyTrackInfoEqual(track, target)) || null
+      this.selectedSourceTrack = track
     },
     selectTargetTrack(track: TrackInfo) {
-      this.targetTrack = track
+      this.selectedTargetTrack = track
+    },
+  },
+  watch: {
+    filteredTargetTracks() {
+      this.selectedTargetTrack = this.filteredTargetTracks
+        .find(target => fuzzyTrackInfoEqual(this.selectedSourceTrack, target)) || null
     },
   },
 })

@@ -52,9 +52,9 @@ export default Vue.extend({
   },
   methods: {
     async syncTracksClicked() {
-      for (const track of this.tracks) {
+      for (const track of this.value) {
         await this.targetLibrary.update(track)
-        this.$emit('input', this.tracks.filter(t => t !== track))
+        this.$emit('input', this.value.filter(t => t !== track))
       }
     },
   }

@@ -1,6 +1,19 @@
 import TrackInfo from "./model/TrackInfo";
 
 /**
+ * Fuzzy-compare two tracks and return true if the tracks are compatible.
+ * Less strict than `fuzzyTrackInfoEqual`.
+ */
+export function fuzzyTrackInfoCandidate(track1: TrackInfo, track2: TrackInfo) {
+  if (track1.durationSeconds !== undefined && track2.durationSeconds !== undefined
+      && Math.abs(track1.durationSeconds - track2.durationSeconds) <= 1) {
+    return true
+  }
+
+  return false
+}
+
+/**
  * Fuzzy-compare two tracks and return true if they match.
  */
 export function fuzzyTrackInfoEqual(track1: TrackInfo, track2: TrackInfo) {
