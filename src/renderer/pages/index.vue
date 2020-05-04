@@ -12,11 +12,11 @@
           @select="selectSourceTrack"
         ></library-pane>
       </div>
-      <div class="absolute bottom-0 left-0 flex flex-col w-full justify-center items-center -mb-8">
-        <button @click="magicMatchClicked" class="bg-black rounded-full p-2 m-1">
+      <div class="absolute bottom-0 left-0 right-0 flex flex-col w-full justify-center items-center -mb-8 pointer-events-none">
+        <button @click="magicMatchClicked" class="bg-black rounded-full p-2 m-1 pointer-events-auto">
           <i class="fas fa-magic fa-2x text-secondary-500"></i>
         </button>
-        <button @click="addTrackClicked" class="bg-black rounded-full p-2 m-1">
+        <button @click="addTrackClicked" class="bg-black rounded-full p-2 m-1 pointer-events-auto">
           <i class="fas fa-arrow-circle-down fa-2x text-secondary-500"></i>
         </button>
       </div>
