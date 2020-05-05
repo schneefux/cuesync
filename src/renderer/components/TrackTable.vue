@@ -4,7 +4,7 @@
       <tr>
         <th v-if="checkable && tracks.length > 0" class="head--check"></th>
         <th
-          v-for="col in visibleColumns"
+          v-for="col in columns"
           :key="col"
           :class="`head--${col}`"
           class="text-left capitalize whitespace-no-wrap"
@@ -28,7 +28,7 @@
           >
         </td>
         <td
-          v-for="col in visibleColumns"
+          v-for="col in columns"
           :key="track.path + col"
           :class="`col--${col}`"
           class="w-full"
@@ -57,12 +57,6 @@ export default Vue.extend({
     columns: {
       type: Array as PropType<Array<keyof TrackInfo>>,
       required: true,
-    },
-    defaultColumns: {
-      type: Array as PropType<Array<keyof TrackInfo>>,
-      default() {
-        return this.columns
-      },
     },
     focusable: {
       type: Boolean,
@@ -93,7 +87,6 @@ export default Vue.extend({
         'durationSeconds': x => x == undefined ? '' : formatTime(x),
         'songStart': x => x == undefined ? '' : formatTime(x),
       },
-      visibleColumns: this.defaultColumns.filter(c => this.columns.includes(c)),
       selections: this.tracks.map(t => true) as TrackInfo[],
     }
   },
