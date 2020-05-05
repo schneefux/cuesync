@@ -23,6 +23,7 @@
     "@fullhuman/postcss-purgecss": "^2.1.2",
     "@jest-runner/electron": "^2.0.3",
     "@nuxt/typescript-build": "^0.6.6",
+    "@tailwindcss/custom-forms": "^0.2.1",
     "@types/glob": "^7.1.1",
     "@types/jest": "^25.2.1",
     "@types/node": "^12.12.37",

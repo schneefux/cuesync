@@ -2,6 +2,7 @@
   <table class="table-fixed w-full">
     <thead>
       <tr>
+        <th v-if="checkable && tracks.length > 0" class="head--check"></th>
         <th
           v-for="col in visibleColumns"
           :key="col"
@@ -10,16 +11,22 @@
         >
           {{ col in headers ? headers[col] : col }}
         </th>
-        <th v-if="deletable" v-show="value.length > 0">Remove</th>
       </tr>
     </thead>
     <tbody>
       <tr
-        v-for="track in value"
+        v-for="(track, index) in tracks"
         :key="track.path"
-        :class="{ 'bg-background-400': track == selection, 'cursor-pointer': selectable }"
-        @click="selectable ? select(track) : null"
+        :class="{ 'bg-background-400': track == focus, 'cursor-pointer': focusable || checkable }"
+        @click="focusable ? doFocus(track) : (checkable ? toggleCheck(index) : null)"
       >
+        <td v-if="checkable" class="text-center cursor-pointer">
+          <input
+            type="checkbox"
+            v-model="selections[index]"
+            class="form-checkbox col--check"
+          >
+        </td>
         <td
           v-for="col in visibleColumns"
           :key="track.path + col"
@@ -27,9 +34,6 @@
           class="w-full"
         >
           {{ col in formatters ? formatters[col](track[col]) : track[col] }}
-        </td>
-        <td v-if="deletable" @click="remove(track)" class="text-center cursor-pointer">
-          <i class="fas fa-trash"></i>
         </td>
       </tr>
     </tbody>
@@ -42,11 +46,11 @@ import TrackInfo from '../../../lib/model/TrackInfo'
 
 export default Vue.extend({
   props: {
-    value: {
+    tracks: {
       type: Array as PropType<TrackInfo[]>,
       required: true,
     },
-    selection: {
+    focus: {
       type: Object as PropType<TrackInfo|null>,
       default: null,
     },
@@ -60,11 +64,11 @@ export default Vue.extend({
         return this.columns
       },
     },
-    deletable: {
+    focusable: {
       type: Boolean,
       default: false,
     },
-    selectable: {
+    checkable: {
       type: Boolean,
       default: false,
     },
@@ -90,14 +94,25 @@ export default Vue.extend({
         'songStart': x => x == undefined ? '' : formatTime(x),
       },
       visibleColumns: this.defaultColumns.filter(c => this.columns.includes(c)),
+      selections: this.tracks.map(t => true) as TrackInfo[],
     }
   },
   methods: {
-    select(track: TrackInfo) {
-      this.$emit('select', track)
+    doFocus(track: TrackInfo) {
+      this.$emit('focus', track)
     },
-    remove(track: TrackInfo) {
-      this.$emit('input', this.value.filter(t => t !== track))
+    toggleCheck(index: number) {
+      this.$set(this.selections, index, !this.selections[index])
+    },
+  },
+  watch: {
+    tracks() {
+      // select all by default
+      this.selections = this.tracks.map(t => true)
+      this.$emit('selections', this.selections)
+    },
+    selections() {
+      this.$emit('selections', this.tracks.filter((t, idx) => this.selections[idx]))
     },
   },
 })
@@ -116,6 +131,10 @@ td,th {
 
 th {
   @apply w-12;
+}
+
+.head--check {
+  @apply w-6;
 }
 
 .head--title {
