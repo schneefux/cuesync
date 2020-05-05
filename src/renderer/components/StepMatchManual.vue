@@ -1,25 +1,31 @@
 <template>
   <div class="flex flex-col items-center">
-    <p>These tracks could not be found in your Serato library.</p>
-    <p>If there are any tracks you wish to migrate, assign them manually.</p>
-    <div class="overflow-auto mt-4 flex" style="height: calc(100vh - 20rem - 5rem); width: calc(100vw - 8rem);">
-      <track-table
-        :tracks="tracks"
-        :columns="['artists', 'album', 'title']"
-        :focus="djayTrack"
-        @focus="track => djayTrack = track"
-        key="5-1"
-        focusable
-      ></track-table>
-      <track-table
-        :tracks="seratoTracks"
-        :columns="['artists', 'album', 'title']"
-        :focus="seratoTrack"
-        @focus="track => seratoTrack = track"
-        key="5-2"
-        focusable
-        class="border-l-4 border-primary-400 w-1/2"
-      ></track-table>
+    <p>These Djay tracks could not be found in your Serato library.</p>
+    <p>If there are any tracks you wish to migrate, click and assign them.</p>
+    <p>⚠ Cues will be shifted if the durations do not match.</p>
+    <div class="mt-4 flex" style="height: calc(100vh - 20rem - 10rem);">
+      <div class="overflow-auto" style="width: calc(50vw - 4rem);">
+        <track-table
+          :tracks="tracks"
+          :columns="['artists', 'album', 'title', 'durationSeconds']"
+          :focus="djayTrack"
+          @focus="selectDjayTrack"
+          key="5-1"
+          focusable
+          class="border-r-4 border-primary-400"
+        ></track-table>
+      </div>
+      <div class="overflow-auto" style="width: calc(50vw - 4rem);">
+        <track-table
+          :tracks="seratoTracks"
+          :columns="['artists', 'album', 'title', 'durationSeconds']"
+          :focus="seratoTrack"
+          @focus="track => seratoTrack = track"
+          key="5-2"
+          focusable
+          class=""
+        ></track-table>
+      </div>
     </div>
 
     <div class="w-full text-center -mb-4">
@@ -28,7 +34,7 @@
       </button>
     </div>
 
-    <div class="overflow-auto mt-4 flex relative" style="height: 5rem; width: calc(100vw - 8rem);">
+    <div class="overflow-auto mt-4 flex relative" style="height: 8rem; width: calc(100vw - 8rem);">
       <!-- TODO add delete -->
       <track-table
         :tracks="matches"
@@ -47,6 +53,7 @@
 import Vue, { PropType } from 'vue'
 import TrackInfo from '../../../lib/model/TrackInfo'
 import TrackTable from '@/components/TrackTable.vue'
+import { fuzzyTrackInfoCandidate, fuzzyTrackInfoEqual } from '../../../lib/compare'
 
 export default Vue.extend({
   components: {
@@ -65,12 +72,18 @@ export default Vue.extend({
   data() {
     return {
       matches: [] as TrackInfo[],
+      candidates: [] as TrackInfo[],
       djayTrack: null as TrackInfo|null,
       seratoTrack: null as TrackInfo|null,
     }
   },
   methods: {
+    selectDjayTrack(track: TrackInfo) {
+      this.djayTrack = track
+      // TODO sort or filter candidates?
+    },
     match() {
+      // TODO prevent duplicates
       this.matches.push({
         ...this.djayTrack,
         ...this.seratoTrack,

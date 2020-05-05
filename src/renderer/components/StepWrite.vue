@@ -1,10 +1,13 @@
 <template>
   <div class="leading-relaxed text-center">
-    <p v-if="!loading">{{ tracks.length }} files will be updated.</p>
-
-    <button v-if="!loading" class="mt-2 button uppercase" @click="write()">sync!</button>
-
-    <p v-if="loading">Processing...</p>
+    <template v-if="!loading">
+      <h2 class="text-lg">All set and ready to go.</h2>
+      <p>{{ tracks.length }} files will be updated.</p>
+      <button class="mt-2 button uppercase" @click="write()">sync!</button>
+    </template>
+    <template v-else>
+      <p v-if="loading">Processing...</p>
+    </template>
   </div>
 </template>
 

@@ -1,7 +1,8 @@
 <template>
   <div class="flex flex-col items-center">
+    <p class="text-lg">Done.</p>
     <p>
-      Done. <span class="text-primary-600 font-semibold">{{ tracks.length }}</span> Tracks
+      <span class="text-primary-600 font-semibold">{{ tracks.length }}</span> Tracks
       have been synced from Djay Pro to Serato.
     </p>
     <p>Have fun mixing!</p>

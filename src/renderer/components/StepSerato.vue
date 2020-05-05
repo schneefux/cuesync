@@ -5,15 +5,15 @@
       <h2>Loading...</h2>
     </template>
     <template v-else>
-      <h2 class="h-10 text-xl">Cue Sync Pro has found these tracks in your Serato Library:</h2>
-      <div class="overflow-auto mt-4" style="height: calc(100vh - 20rem); width: calc(100vw - 8rem);">
+      <h2 class="h-6 text-lg">Cue Sync Pro has found these tracks in your Serato Library:</h2>
+      <div class="overflow-auto mt-4" style="height: calc(100vh - 18rem); width: calc(100vw - 8rem);">
         <track-table
           :tracks="tracks"
           :columns="['artists', 'album', 'title', 'cues', 'bpm']"
         ></track-table>
       </div>
 
-      <div class="mt-2">
+      <div class="mt-4">
         <button class="button" @click="$emit('next', tracks)">confirm</button>
       </div>
     </template>

@@ -15,14 +15,49 @@
 
     <div class="flex-grow flex flex-col justify-center pt-6">
       <div class="bg-background-600 px-6 py-4 my-auto">
-        <step-intro v-if="step == 0" @next="step++"></step-intro>
-        <step-djay v-if="step == 1" @next="tracks => { djayTracks = tracks; step++ }"></step-djay>
-        <step-serato v-if="step == 2" @next="tracks => { seratoTracks = tracks; step++; match() }"></step-serato>
-        <step-match-sure v-if="step == 3" :tracks="sureMatches" @next="tracks => { tracksToWrite = tracksToWrite.concat(tracks); step++ }"></step-match-sure>
-        <step-match-overwriting v-if="step == 4" :tracks="overwritingSureMatches" @next="tracks => { tracksToWrite = tracksToWrite.concat(tracks); step++ }"></step-match-overwriting>
-        <step-match-manual v-if="step == 5" :tracks="unsureMatches" :serato-tracks="seratoTracks" @next="tracks => { tracksToWrite = tracksToWrite.concat(tracks); step++ }"></step-match-manual>
-        <step-write v-if="step == 6" :tracks="tracksToWrite" @next="step++"></step-write>
-        <step-done v-if="step == 7" :tracks="tracksToWrite"></step-done>
+        <step-intro
+          v-if="step == 0"
+          @next="step++"
+        ></step-intro>
+
+        <step-djay
+          v-if="step == 1"
+          @next="tracks => { djayTracks = tracks; step++ }"
+        ></step-djay>
+
+        <step-serato
+          v-if="step == 2"
+          @next="tracks => { seratoTracks = tracks; step++; match() }">
+        </step-serato>
+
+        <step-match-sure
+          v-if="step == 3" :tracks="sureMatches"
+          @next="tracks => { tracksToWrite = tracksToWrite.concat(tracks); step++ }">
+        </step-match-sure>
+
+        <step-match-overwriting
+          v-if="step == 4"
+          :tracks="overwritingSureMatches"
+          @next="tracks => { tracksToWrite = tracksToWrite.concat(tracks); step++ }">
+        </step-match-overwriting>
+
+        <step-match-manual
+          v-if="step == 5"
+          :tracks="unsureMatches"
+          :serato-tracks="seratoTracks"
+          @next="tracks => { tracksToWrite = tracksToWrite.concat(tracks); step++ }">
+        </step-match-manual>
+
+        <step-write
+          v-if="step == 6"
+          :tracks="tracksToWrite"
+          @next="step++">
+        </step-write>
+
+        <step-done
+          v-if="step == 7"
+          :tracks="tracksToWrite">
+        </step-done>
       </div>
     </div>
   </div>
@@ -31,7 +66,6 @@
 <script lang="ts">
 import Vue from 'vue'
 import TrackInfo from '../../../lib/model/TrackInfo'
-import TrackTable from '@/components/TrackTable.vue'
 import StepperHeader from '@/components/StepperHeader.vue'
 import StepIntro from '@/components/StepIntro.vue'
 import StepDjay from '@/components/StepDjay.vue'
@@ -47,7 +81,6 @@ export default Vue.extend({
   layout: 'empty',
   components: {
     StepperHeader,
-    TrackTable,
     StepIntro,
     StepDjay,
     StepSerato,

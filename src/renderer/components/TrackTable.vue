@@ -1,5 +1,6 @@
 <template>
   <table class="table-fixed w-full">
+    <!-- TODO fixed header -->
     <thead>
       <tr>
         <th v-if="checkable && tracks.length > 0" class="head--check"></th>
@@ -73,7 +74,7 @@ export default Vue.extend({
     return {
       headers: {
         'cues': 'Cues?',
-        'bpm': 'BPM?',
+        'bpm': 'BPM',
         'bpmLock': 'BPM Locked?',
         'durationSeconds': 'duration',
         'isrc': 'ISRC',
