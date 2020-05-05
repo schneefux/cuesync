@@ -1,8 +1,15 @@
 <template>
-  <table>
+  <table class="table-fixed w-full">
     <thead>
       <tr>
-        <th class="text-left capitalize" v-for="col in visibleColumns" :key="col">{{ col }}</th>
+        <th
+          v-for="col in visibleColumns"
+          :key="col"
+          :class="`head--${col}`"
+          class="text-left capitalize whitespace-no-wrap"
+        >
+          {{ col in headers ? headers[col] : col }}
+        </th>
         <th v-if="deletable" v-show="value.length > 0">Remove</th>
       </tr>
     </thead>
@@ -13,7 +20,12 @@
         :class="{ 'bg-background-400': track == selection, 'cursor-pointer': selectable }"
         @click="selectable ? select(track) : null"
       >
-        <td v-for="col in visibleColumns" :key="track.path + col" :class="`col--${col}`">
+        <td
+          v-for="col in visibleColumns"
+          :key="track.path + col"
+          :class="`col--${col}`"
+          class="w-full"
+        >
           {{ col in formatters ? formatters[col](track[col]) : track[col] }}
         </td>
         <td v-if="deletable" @click="remove(track)" class="text-center cursor-pointer">
@@ -58,10 +70,24 @@ export default Vue.extend({
     },
   },
   data() {
+    const formatTime = x => `${Math.floor(x/60)}:${Math.floor(x%60).toString().padStart(2, '0')}`
+
     return {
+      headers: {
+        'cues': 'Cues?',
+        'bpm': 'BPM?',
+        'bpmLock': 'BPM Locked?',
+        'durationSeconds': 'duration',
+        'isrc': 'ISRC',
+        'songStart': 'Song Start',
+      },
       formatters: {
         'artists': x => x == undefined ? '' : x.join(', '),
-        'cues': x => x == undefined ? '' : x.length > 0 ? '✔️' : '❌'
+        'cues': x => x == undefined ? '' : x.length > 0 ? '✔️' : '❌',
+        'bpmLock': x => x == undefined ? '' : x == 'true' ? '✔️' : '❌',
+        'bpm': x => x == undefined ? '' : Math.floor(x),
+        'durationSeconds': x => x == undefined ? '' : formatTime(x),
+        'songStart': x => x == undefined ? '' : formatTime(x),
       },
       visibleColumns: this.defaultColumns.filter(c => this.columns.includes(c)),
     }
@@ -82,7 +108,25 @@ td,th {
   @apply px-2;
 }
 
-.col--cues {
+.col--cues, .head--cues,
+.col--bpm, .head--bpm,
+.col--duration, .head--duration {
   @apply text-center;
+}
+
+th {
+  @apply w-12;
+}
+
+.head--title {
+  @apply w-2/12;
+}
+
+.head--album {
+  @apply w-2/12;
+}
+
+.head--artists {
+  @apply w-2/12;
 }
 </style>

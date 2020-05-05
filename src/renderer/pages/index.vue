@@ -50,6 +50,7 @@
                 <track-table
                   v-model="djayTracks"
                   :columns="djayLibrary.attributes()"
+                  :default-columns="['artists', 'title', 'cues', 'bpm', 'songStart']"
                 ></track-table>
               </div>
 
@@ -70,6 +71,7 @@
               <track-table
                 v-model="seratoTracks"
                 :columns="seratoLibrary.attributes()"
+                :default-columns="['artists', 'album', 'title', 'cues', 'bpm']"
               ></track-table>
             </div>
 
@@ -85,6 +87,7 @@
             <track-table
               v-model="matchedTracks"
               :columns="seratoLibrary.attributes()"
+              :default-columns="['artists', 'album', 'title', 'cues', 'bpm']"
               deletable
             ></track-table>
           </div>
