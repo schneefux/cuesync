@@ -42,6 +42,7 @@
     "node-loader": "^0.6.0",
     "node-sass": "^4.14.0",
     "nuxt": "^2.12.2",
+    "sass-loader": "^8.0.2",
     "serato-crater": "^1.0.0",
     "simple-plist": "^1.1.0",
     "tailwindcss": "^1.4.1",
@@ -54,7 +55,6 @@
     "webpack-node-externals": "^1.7.2"
   },
   "dependencies": {
-    "sass-loader": "^8.0.2",
     "taglib3": "^3.0.10"
   }
 }
