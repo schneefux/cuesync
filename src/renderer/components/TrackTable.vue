@@ -1,6 +1,5 @@
 <template>
   <table class="table-fixed w-full">
-    <!-- TODO fixed header -->
     <thead>
       <tr>
         <th v-if="checkable && tracks.length > 0" class="head--check">
@@ -131,6 +130,10 @@ export default Vue.extend({
 <style lang="scss" scoped>
 td,th {
   @apply px-2;
+}
+
+th {
+  @apply sticky top-0 bg-background-700 py-1;
 }
 
 .col--cues, .head--cues,
