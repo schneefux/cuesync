@@ -95,24 +95,19 @@ test('should write Serato data to mp3', async () => {
   expect(data).toBeDefined()
 })
 
-test('should detect crate', async () => {
-  const crates = await library.listCrates(fixtures)
-  expect(crates.length).toBe(1)
-})
-
-test('should parse crate', async () => {
-  const songs = await library.listSongs(path.join(fixtures, '_Serato_', 'Subcrates', 'fixtures.crate'))
-  expect(songs[0]).toBe(path.join(path.resolve(fixtures), 'retro_funky.flac'))
-})
-
 test('should cache tracks', async () => {
   const library = new SeratoLibraryManager(fixtures)
+  library.crateReader.listSongs = () => Promise.resolve([path.resolve(fixtures, 'retro_funky.flac')])
   await library.load()
   const tracks = await library.list()
-  expect(tracks.length).toBe(3)
+
+  // 2 crates - but same song
+  expect(tracks.length).toBe(1)
   expect(tracks[0]).toMatchObject({
-    path: 'P:\\cuemigrator\\fixtures\\retro_funky.flac',
     filename: 'retro_funky.flac',
+    bpmLock: false,
+    durationSeconds: 215,
+    album: 'Retro Funky',
   })
   expect(tracks[0].cues).not.toBe(undefined)
 })

@@ -1,44 +1,44 @@
 import { promisify } from "util"
-import * as globCb from 'glob'
 import * as taglib from 'taglib3'
 import SeratoTrackSerializer, { FrameMap } from "./SeratoTrackSerializer"
 import LibraryManager from "../model/LibraryManager"
-import * as seratoCrater from 'serato-crater'
 import * as path from 'path'
 import TaglibInfo, { TaglibId3Info, TaglibAudioProperties } from "./taglib/model/taglib"
 import { fuzzyTrackInfoEqual } from "../compare"
 import TrackInfo from "../model/TrackInfo"
 import * as fs from "fs"
 import TaglibTrackSerializer from "./taglib/TaglibTrackSerializer"
-
-// TODO replace seratojs by own implementation
-// or try https://github.com/Rickgg/serato-crater
+import SeratoCrateReader from "./SeratoCrateReader"
 
 const readId3Tags = promisify(taglib.readId3Tags)
 const writeId3Tags = promisify(taglib.writeId3Tags)
 const readTaglibTags = promisify(taglib.readTags)
 const writeTaglibTags = promisify(taglib.writeTags)
 const readAudioProperties = promisify(taglib.readAudioProperties)
-const glob = promisify(globCb as any)
 
 export default class SeratoLibraryManager implements LibraryManager {
   tracks: TrackInfo[] = []
   taglibSerializer = new TaglibTrackSerializer()
   seratoSerializer = new SeratoTrackSerializer()
+  crateReader = new SeratoCrateReader()
 
   constructor(public rootPath: string) { }
 
   async load() {
     this.tracks = []
-    const crates = await this.listCrates(this.rootPath)
+    const crates = await this.crateReader.listCrates(this.rootPath)
     for (const cratePath of crates) {
-      const songPaths = await this.listSongs(cratePath)
-      // TODO filter duplicates
+      const songPaths = await this.crateReader.listSongs(cratePath)
       for (const songPath of songPaths) {
         try {
           await fs.promises.access(songPath)
         } catch (err) {
           console.error('file does not exist', songPath) // TODO show error / handle in UI?
+          continue
+        }
+
+        if (this.tracks.find(t => t.path == songPath)) {
+          // duplicate
           continue
         }
 
@@ -61,28 +61,6 @@ export default class SeratoLibraryManager implements LibraryManager {
       'durationSeconds', 'path', 'filename',
       'isrc', 'key', 'genre']
     return keys
-  }
-
-  /**
-   * Find all crates under the given root path.
-   */
-  async listCrates(root: string) {
-    const crates = await glob('**/_Serato_/Subcrates/*.crate', {
-      cwd: root,
-      silent: true,
-      strict: false,
-    })
-    return crates.map(c => path.join(root, c))
-  }
-
-  /**
-   * Read all songs from the crate.
-   */
-  async listSongs(crate: string) {
-    // song paths are relative to the folder that contains the _Serato_ folder
-    const crateData = await seratoCrater(crate) as { columns: string[], songs: string[] }
-    const seratoParentPath = path.resolve(path.join(crate, '..', '..', '..'))
-    return crateData.songs.map(song => path.join(seratoParentPath, song))
   }
 
   /**
