@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col items-center">
-    <p>Based on their file tags, these Djay tracks have no cues set in Serato.</p>
+    <p>Based on their file tags, these tracks are in both libraries but have no cues set in Serato.</p>
     <p>Uncheck tracks you do not want to migrate.</p>
     <div class="overflow-auto mt-4" style="height: calc(100vh - 20rem); width: calc(100vw - 8rem);">
       <track-table

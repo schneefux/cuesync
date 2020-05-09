@@ -1,8 +1,8 @@
 <template>
   <div class="flex flex-col items-center">
     <p>These Djay tracks could not be found in your Serato library.</p>
-    <p>If there are any tracks you wish to migrate, click and assign them.</p>
-    <p>⚠ Cues will be shifted if the durations do not match.</p>
+    <p>Click and assign tracks you wish to migrate.</p>
+    <p>⚠ Durations must match or cues will be shifted.</p>
     <div class="mt-4 flex" style="height: calc(100vh - 20rem - 10rem);">
       <div class="overflow-auto" style="width: calc(50vw - 4rem);">
         <track-table

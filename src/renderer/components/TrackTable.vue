@@ -146,7 +146,8 @@ td:nth-child(n+2),th:nth-child(n+2) {
 
 .col--cues, .head--cues,
 .col--bpm, .head--bpm,
-.col--duration, .head--duration {
+.col--duration, .head--duration,
+.col--songStart, .head--songStart {
   @apply text-center;
 }
 
