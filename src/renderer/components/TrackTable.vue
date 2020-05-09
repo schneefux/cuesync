@@ -2,7 +2,7 @@
   <table class="table-fixed w-full">
     <thead>
       <tr>
-        <th v-if="checkable && tracks.length > 0" class="head--check">
+        <th v-if="checkable && tracks.length > 0" class="head--check leading-3">
           <input
             type="checkbox"
             v-model="selectAll"
@@ -26,7 +26,7 @@
         :class="{ 'bg-background-400': track == focus, 'cursor-pointer': focusable || checkable }"
         @click="focusable ? doFocus(track) : (checkable ? toggleCheck(index) : null)"
       >
-        <td v-if="checkable" class="text-center cursor-pointer">
+        <td v-if="checkable" class="text-center cursor-pointer leading-3">
           <input
             type="checkbox"
             v-model="selections[index]"
@@ -134,6 +134,14 @@ td,th {
 
 th {
   @apply sticky top-0 bg-background-700 py-1;
+}
+
+tbody tr {
+  @apply border-b border-background-400;
+}
+
+td:nth-child(n+2),th:nth-child(n+2) {
+ @apply border-l-2 border-background-400
 }
 
 .col--cues, .head--cues,
