@@ -3,7 +3,13 @@
     <!-- TODO fixed header -->
     <thead>
       <tr>
-        <th v-if="checkable && tracks.length > 0" class="head--check"></th>
+        <th v-if="checkable && tracks.length > 0" class="head--check">
+          <input
+            type="checkbox"
+            v-model="selectAll"
+            class="form-checkbox"
+          >
+        </th>
         <th
           v-for="col in columns"
           :key="col"
@@ -88,7 +94,17 @@ export default Vue.extend({
         'durationSeconds': x => x == undefined ? '' : formatTime(x),
         'songStart': x => x == undefined ? '' : formatTime(x),
       },
-      selections: this.tracks.map(t => true) as TrackInfo[],
+      selections: this.tracks.map(t => true) as boolean[],
+    }
+  },
+  computed: {
+    selectAll: {
+      get() {
+        return this.selections.every(t => t)
+      },
+      set(value) {
+        return this.selections = this.tracks.map(t => value)
+      },
     }
   },
   methods: {
