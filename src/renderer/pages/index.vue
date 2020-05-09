@@ -78,7 +78,6 @@ import StepDone from '@/components/StepDone.vue'
 import { fuzzyTrackInfoEqual, fuzzyTrackInfoCandidate } from '../../../lib/compare'
 
 export default Vue.extend({
-  layout: 'empty',
   components: {
     StepperHeader,
     StepIntro,
