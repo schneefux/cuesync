@@ -4,9 +4,9 @@
     <p>Click and assign tracks you wish to migrate.</p>
     <p>⚠ Durations must match or cues will be shifted.</p>
     <div class="mt-4 flex relative" style="height: calc(100vh - 20rem - 10rem);">
-      <div class="overflow-auto mr-2" style="width: calc(50vw - 5rem);">
+      <div class="overflow-auto mr-2" style="width: calc(50vw - 4.5rem);">
         <track-table
-          :tracks="tracks"
+          :tracks="filteredDjayTracks"
           :columns="['artists', 'album', 'title', 'durationSeconds']"
           :focus="djayTrack"
           @focus="selectDjayTrack"
@@ -14,9 +14,9 @@
           focusable
         ></track-table>
       </div>
-      <div class="overflow-auto ml-2" style="width: calc(50vw - 5rem);">
+      <div class="overflow-auto ml-2" style="width: calc(50vw - 4.5rem);">
         <track-table
-          :tracks="seratoTracks"
+          :tracks="filteredSeratoTracks"
           :columns="['artists', 'album', 'title', 'durationSeconds']"
           :focus="seratoTrack"
           @focus="track => seratoTrack = track"
@@ -74,7 +74,17 @@ export default Vue.extend({
       candidates: [] as TrackInfo[],
       djayTrack: null as TrackInfo|null,
       seratoTrack: null as TrackInfo|null,
+      matchedDjayTracks: [] as TrackInfo[],
+      matchedSeratoTracks: [] as TrackInfo[],
     }
+  },
+  computed: {
+    filteredDjayTracks() {
+      return this.tracks.filter(t => !this.matchedDjayTracks.includes(t))
+    },
+    filteredSeratoTracks() {
+      return this.seratoTracks.filter(t => !this.matchedSeratoTracks.includes(t))
+    },
   },
   methods: {
     selectDjayTrack(track: TrackInfo) {
@@ -82,12 +92,17 @@ export default Vue.extend({
       // TODO sort or filter candidates?
     },
     match() {
-      // TODO prevent duplicates
+      this.matchedDjayTracks.push(this.djayTrack)
+      this.matchedSeratoTracks.push(this.seratoTrack)
+
       this.matches.push({
         ...this.djayTrack,
         ...this.seratoTrack,
         cues: this.djayTrack.cues,
       })
+
+      this.djayTrack = null
+      this.seratoTrack = null
     },
   },
 })
