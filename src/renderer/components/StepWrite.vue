@@ -1,8 +1,16 @@
 <template>
-  <div class="leading-relaxed text-center">
+  <div class="flex flex-col items-center">
     <template v-if="!loading">
-      <h2 class="text-lg">All set and ready to go.</h2>
-      <p>{{ tracks.length }} files will be updated.</p>
+      <div class="text-center leading-relaxed">
+        <h2 class="text-lg">All set and ready to go.</h2>
+        <p>{{ tracks.length }} files will be updated.</p>
+      </div>
+      <div class="overflow-auto mt-4" style="height: calc(100vh - 18rem); width: calc(100vw - 8rem);">
+        <track-table
+          :tracks="tracks"
+          :columns="['artists', 'album', 'title']"
+        ></track-table>
+      </div>
       <button class="mt-2 button uppercase" @click="write()">sync!</button>
     </template>
     <template v-else>
@@ -15,8 +23,12 @@
 import Vue, { PropType } from 'vue'
 import TrackInfo from '../../../lib/model/TrackInfo'
 import SeratoLibraryManager from '../../../lib/serato/SeratoLibraryManager'
+import TrackTable from '@/components/TrackTable.vue'
 
 export default Vue.extend({
+  components: {
+    TrackTable,
+  },
   props: {
     tracks: {
       type: Array as PropType<TrackInfo[]>,

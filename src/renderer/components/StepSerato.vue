@@ -2,7 +2,7 @@
   <div class="flex flex-col items-center">
     <!-- TODO select hard drives & maybe crates -->
     <template v-if="!loaded">
-      <h2>Loading...</h2>
+      <h2>Loading Serato library...</h2>
     </template>
     <template v-else>
       <h2 class="h-6 text-lg">Cue Sync Pro has found these tracks in your Serato Library:</h2>
@@ -14,7 +14,7 @@
       </div>
 
       <div class="mt-4">
-        <button class="button" @click="$emit('next', tracks)">confirm</button>
+        <button class="button" @click="$emit('next', tracks)">okay</button>
       </div>
     </template>
   </div>

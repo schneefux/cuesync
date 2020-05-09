@@ -7,7 +7,7 @@
     </template>
     <template v-else>
       <template v-if="!loaded">
-        <h2>Loading...</h2>
+        <h2>Loading Djay library...</h2>
       </template>
       <template v-else>
         <h2 class="h-6 text-lg">Cue Sync Pro has found these tracks in your DJay Library:</h2>
