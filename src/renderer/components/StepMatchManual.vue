@@ -3,8 +3,8 @@
     <p>These Djay tracks could not be found in your Serato library.</p>
     <p>Click and assign tracks you wish to migrate.</p>
     <p>⚠ Durations must match or cues will be shifted.</p>
-    <div class="mt-4 flex" style="height: calc(100vh - 20rem - 10rem);">
-      <div class="overflow-auto" style="width: calc(50vw - 4rem);">
+    <div class="mt-4 flex relative" style="height: calc(100vh - 20rem - 10rem);">
+      <div class="overflow-auto mr-2" style="width: calc(50vw - 5rem);">
         <track-table
           :tracks="tracks"
           :columns="['artists', 'album', 'title', 'durationSeconds']"
@@ -12,10 +12,9 @@
           @focus="selectDjayTrack"
           key="5-1"
           focusable
-          class="border-r-4 border-primary-400"
         ></track-table>
       </div>
-      <div class="overflow-auto" style="width: calc(50vw - 4rem);">
+      <div class="overflow-auto ml-2" style="width: calc(50vw - 5rem);">
         <track-table
           :tracks="seratoTracks"
           :columns="['artists', 'album', 'title', 'durationSeconds']"
@@ -26,15 +25,15 @@
           class=""
         ></track-table>
       </div>
+
+      <div class="w-full text-center -mb-8 absolute bottom-0 pointer-events-none z-10">
+        <button class="button button--floating pointer-events-auto" @click="match()">
+          assign
+        </button>
+      </div>
     </div>
 
-    <div class="w-full text-center -mb-4">
-      <button class="button" @click="match()">
-        assign
-      </button>
-    </div>
-
-    <div class="overflow-auto mt-4 flex relative" style="height: 8rem; width: calc(100vw - 8rem);">
+    <div class="overflow-auto mt-4 flex z-0" style="height: 8rem; width: calc(100vw - 8rem);">
       <!-- TODO add delete -->
       <track-table
         :tracks="matches"

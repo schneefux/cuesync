@@ -1,19 +1,11 @@
 .button {
-  @apply border-2 border-secondary-600 bg-secondary-800 rounded-sm px-2;
+  @apply bg-secondary-600 rounded-sm px-3 py-1;
+
+  &--floating {
+    @apply rounded-full text-lg;
+  }
 }
 
 .textinput {
   @apply bg-background-400 rounded-sm px-2 py-1;
-}
-
-.h-70vh {
-  height: 70vh;
-}
-
-.h-60vh {
-  height: 60vh;
-}
-
-.h-50vh {
-  height: 50vh;
 }

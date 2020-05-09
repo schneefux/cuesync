@@ -151,6 +151,10 @@ td:nth-child(n+2),th:nth-child(n+2) {
   @apply text-center;
 }
 
+.col--title {
+  @apply break-all;
+}
+
 th {
   @apply w-12;
 }
