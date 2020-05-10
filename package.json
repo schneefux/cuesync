@@ -54,6 +54,7 @@
     "webpack-node-externals": "^1.7.2"
   },
   "dependencies": {
+    "drivelist": "^8.0.10",
     "taglib3": "^3.0.10"
   }
 }

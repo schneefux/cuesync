@@ -1,6 +1,8 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import * as globCb from 'glob'
+import * as drivelist from 'drivelist'
+import * as os from 'os'
 import { promisify } from 'util'
 
 const glob = promisify(globCb as any)
@@ -8,10 +10,21 @@ const glob = promisify(globCb as any)
 // based on https://github.com/MartinHH/CrateToM3U/blob/master/src/main/scala/io/github/martinhh/sl/CrateExtractor.scala
 export default class SeratoCrateReader {
   /**
+   * Return all likely roots where crates could be stored.
+   */
+  async listRoots() {
+    const drives = await drivelist.list()
+    const mounts = ([] as drivelist.Mountpoint[])
+      .concat(...drives.map(d => d.mountpoints))
+    return mounts.map(m => m.path)
+      .concat(path.join(os.homedir(), 'Music'))
+  }
+
+  /**
    * Find all crates under the given root path.
    */
   async listCrates(root: string) {
-    const crates = await glob('**/_Serato_/Subcrates/*.crate', {
+    const crates = await glob('_Serato_/Subcrates/*.crate', {
       cwd: root,
       silent: true,
       strict: false,

@@ -1,9 +1,15 @@
 import * as path from 'path'
+import * as os from 'os'
 import SeratoCrateReader from './SeratoCrateReader'
 
 const fixtures = 'fixtures/'
 const reader = new SeratoCrateReader()
 const drivePath = path.resolve('/')
+
+test('should list roots', async () => {
+  const roots = await reader.listRoots()
+  expect(roots).toContain(path.join(os.homedir(), 'Music'))
+})
 
 test('should detect crates', async () => {
   const crates = await reader.listCrates(fixtures)

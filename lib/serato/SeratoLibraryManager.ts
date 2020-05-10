@@ -16,37 +16,37 @@ const readTaglibTags = promisify(taglib.readTags)
 const writeTaglibTags = promisify(taglib.writeTags)
 const readAudioProperties = promisify(taglib.readAudioProperties)
 
+/**
+ * LibraryManager that manages a single Serato crate.
+ */
 export default class SeratoLibraryManager implements LibraryManager {
   tracks: TrackInfo[] = []
   taglibSerializer = new TaglibTrackSerializer()
   seratoSerializer = new SeratoTrackSerializer()
   crateReader = new SeratoCrateReader()
 
-  constructor(public rootPath: string) { }
+  constructor(public cratePath: string) { }
 
   async load() {
     this.tracks = []
-    const crates = await this.crateReader.listCrates(this.rootPath)
-    for (const cratePath of crates) {
-      const songPaths = await this.crateReader.listSongs(cratePath)
-      for (const songPath of songPaths) {
-        try {
-          await fs.promises.access(songPath)
-        } catch (err) {
-          console.error('file does not exist', songPath) // TODO show error / handle in UI?
-          continue
-        }
+    const songPaths = await this.crateReader.listSongs(this.cratePath)
+    for (const songPath of songPaths) {
+      try {
+        await fs.promises.access(songPath)
+      } catch (err) {
+        console.error('file does not exist', songPath) // TODO show error / handle in UI?
+        continue
+      }
 
-        if (this.tracks.find(t => t.path == songPath)) {
-          // duplicate
-          continue
-        }
+      if (this.tracks.find(t => t.path == songPath)) {
+        // duplicate
+        continue
+      }
 
-        try {
-          this.tracks.push(await this.loadTrack(songPath))
-        } catch (err) {
-          console.error('could not parse', songPath, err)
-        }
+      try {
+        this.tracks.push(await this.loadTrack(songPath))
+      } catch (err) {
+        console.error('could not parse', songPath, err)
       }
     }
   }

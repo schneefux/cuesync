@@ -35,6 +35,7 @@ import * as fs from 'fs'
 import SeratoLibraryManager from '../../../lib/serato/SeratoLibraryManager'
 import TrackInfo from '../../../lib/model/TrackInfo'
 import TrackTable from '@/components/TrackTable.vue'
+import SeratoCrateReader from '../../../lib/serato/SeratoCrateReader'
 
 export default Vue.extend({
   components: {
@@ -49,20 +50,25 @@ export default Vue.extend({
     }
   },
   async created() {
-    const libraryPath = path.join(os.homedir(), 'Music')
-    const subcratesPath = path.join(libraryPath, '_Serato_', 'Subcrates')
+    this.tracks = []
 
-    try {
-      await fs.promises.access(subcratesPath)
-    } catch (err) {
-      this.libraryExists = false
-      return
+    const reader = new SeratoCrateReader()
+    const roots = await reader.listRoots()
+    for (const root of roots) {
+      const crates = await reader.listCrates(root)
+      for (const crate of crates) {
+        const library = new SeratoLibraryManager(crate)
+        try {
+          await library.load()
+        } catch (err) {
+          console.error(err) // TODO
+          continue
+        }
+
+        this.tracks = [...this.tracks, ...library.list()]
+      }
     }
 
-
-    this.seratoLibrary = new SeratoLibraryManager(libraryPath)
-    await this.seratoLibrary.load()
-    this.tracks = this.seratoLibrary.list()
     this.loaded = true
   },
 })
