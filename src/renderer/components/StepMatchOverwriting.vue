@@ -8,6 +8,7 @@
         :columns="['artists', 'album', 'title']"
         @selections="ts => selections = ts"
         checkable
+        searchable
       ></track-table>
     </div>
 

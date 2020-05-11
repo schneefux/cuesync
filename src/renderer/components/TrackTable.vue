@@ -1,49 +1,56 @@
 <template>
-  <table class="table-fixed w-full">
-    <thead>
-      <tr>
-        <th v-if="checkable && tracks.length > 0" class="head--check leading-3">
-          <input
-            type="checkbox"
-            v-model="selectAll"
-            class="form-checkbox"
+  <div class="flex flex-wrap justify-center">
+    <label v-if="searchable">
+      <span class="mx-1">Search:</span>
+      <input v-model="search" type="text" class="mx-1 my-2 px-2 py-1 form-input text-black bg-background-100">
+    </label>
+    <table class="table-fixed w-full">
+      <thead>
+        <tr>
+          <th v-if="checkable && tracks.length > 0" class="head--check leading-3">
+            <input
+              type="checkbox"
+              v-model="selectAll"
+              class="form-checkbox"
+            >
+          </th>
+          <th
+            v-for="col in columns"
+            :key="col"
+            :class="`head--${col}`"
+            class="text-left capitalize whitespace-no-wrap"
           >
-        </th>
-        <th
-          v-for="col in columns"
-          :key="col"
-          :class="`head--${col}`"
-          class="text-left capitalize whitespace-no-wrap"
+            {{ col in headers ? headers[col] : col }}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          v-for="(track, index) in tracks"
+          v-show="visible[index]"
+          :key="track.path"
+          :class="{ 'bg-background-400': track == focus, 'cursor-pointer': focusable || checkable }"
+          @click="focusable ? doFocus(track) : (checkable ? toggleCheck(index) : null)"
         >
-          {{ col in headers ? headers[col] : col }}
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr
-        v-for="(track, index) in tracks"
-        :key="track.path"
-        :class="{ 'bg-background-400': track == focus, 'cursor-pointer': focusable || checkable }"
-        @click="focusable ? doFocus(track) : (checkable ? toggleCheck(index) : null)"
-      >
-        <td v-if="checkable" class="text-center cursor-pointer leading-3">
-          <input
-            type="checkbox"
-            v-model="selections[index]"
-            class="form-checkbox col--check"
+          <td v-if="checkable" class="text-center cursor-pointer leading-3">
+            <input
+              type="checkbox"
+              v-model="selections[index]"
+              class="form-checkbox col--check"
+            >
+          </td>
+          <td
+            v-for="col in columns"
+            :key="track.path + col"
+            :class="`col--${col}`"
+            class="w-full"
           >
-        </td>
-        <td
-          v-for="col in columns"
-          :key="track.path + col"
-          :class="`col--${col}`"
-          class="w-full"
-        >
-          {{ col in formatters ? formatters[col](track[col]) : track[col] }}
-        </td>
-      </tr>
-    </tbody>
-  </table>
+            {{ col in formatters ? formatters[col](track[col]) : track[col] }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </template>
 
 <script lang="ts">
@@ -72,6 +79,10 @@ export default Vue.extend({
       type: Boolean,
       default: false,
     },
+    searchable: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     const formatTime = x => `${Math.floor(x/60)}:${Math.floor(x%60).toString().padStart(2, '0')}`
@@ -94,6 +105,7 @@ export default Vue.extend({
         'songStart': x => x == undefined ? '' : formatTime(x),
       },
       selections: this.tracks.map(t => true) as boolean[],
+      search: '',
     }
   },
   computed: {
@@ -102,9 +114,30 @@ export default Vue.extend({
         return this.selections.every(t => t)
       },
       set(value) {
-        return this.selections = this.tracks.map(t => value)
+        // only toggle visible tracks
+        this.selections = this.tracks.map((t, idx) => this.visible[idx] ? value : this.selections[idx])
       },
-    }
+    },
+    visible() {
+      if (this.search == '') {
+        return this.tracks.map(t => true)
+      } else {
+        return this.tracks.map(t => {
+          const s = this.search.toLowerCase()
+          if (t.artists !== undefined && t.artists.some(a => a.toLowerCase().includes(s))) {
+            return true
+          }
+          if (t.title !== undefined && t.title.toLowerCase().includes(s)) {
+            return true
+          }
+          if (t.album !== undefined && t.album.toLowerCase().includes(s)) {
+            return true
+          }
+
+          return false
+        })
+      }
+    },
   },
   methods: {
     doFocus(track: TrackInfo) {

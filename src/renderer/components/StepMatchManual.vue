@@ -12,6 +12,7 @@
           @focus="selectDjayTrack"
           key="5-1"
           focusable
+          searchable
         ></track-table>
       </div>
       <div class="overflow-auto ml-2" style="width: calc(50vw - 4.5rem);">
@@ -22,7 +23,7 @@
           @focus="track => seratoTrack = track"
           key="5-2"
           focusable
-          class=""
+          searchable
         ></track-table>
       </div>
 
