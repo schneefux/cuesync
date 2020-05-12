@@ -80,10 +80,10 @@ export default Vue.extend({
     }
   },
   computed: {
-    filteredDjayTracks() {
+    filteredDjayTracks(): TrackInfo[] {
       return this.tracks.filter(t => !this.matchedDjayTracks.includes(t))
     },
-    filteredSeratoTracks() {
+    filteredSeratoTracks(): TrackInfo[] {
       return this.seratoTracks.filter(t => !this.matchedSeratoTracks.includes(t))
     },
   },
@@ -93,6 +93,10 @@ export default Vue.extend({
       // TODO sort or filter candidates?
     },
     match() {
+      if (this.djayTrack == null || this.seratoTrack == null) {
+        return
+      }
+
       this.matchedDjayTracks.push(this.djayTrack)
       this.matchedSeratoTracks.push(this.seratoTrack)
 

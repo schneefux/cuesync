@@ -110,10 +110,10 @@ export default Vue.extend({
   },
   computed: {
     selectAll: {
-      get() {
+      get(): boolean {
         return this.selections.every(t => t)
       },
-      set(value) {
+      set(value: boolean) {
         // only toggle visible tracks
         this.selections = this.tracks.map((t, idx) => this.visible[idx] ? value : this.selections[idx])
       },

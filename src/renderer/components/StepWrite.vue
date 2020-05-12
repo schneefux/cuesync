@@ -42,9 +42,9 @@ export default Vue.extend({
   },
   methods: {
     async write() {
-      this.seratoLibrary = new SeratoLibraryManager('')
+      const seratoLibrary = new SeratoLibraryManager('')
       for (const track of this.tracks) {
-        await this.seratoLibrary.update(track)
+        await seratoLibrary.update(track)
       }
 
       this.$emit('next')

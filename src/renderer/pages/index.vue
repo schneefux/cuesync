@@ -1,5 +1,7 @@
 <template>
   <div class="h-screen flex flex-col items-center px-16 py-6">
+    <nuxt-link to="/landing">DEBUG</nuxt-link>
+
     <stepper-header
       :step="step"
       :headings="[
@@ -114,7 +116,7 @@ export default Vue.extend({
 
             if (fuzzyTrackInfoCandidate(source, target)) {
               anyMatch = true
-              if (target.cues.length == 0) {
+              if (target.cues !== undefined && target.cues.length == 0) {
                 this.sureMatches.push(t)
               } else {
                 this.overwritingSureMatches.push(t)
