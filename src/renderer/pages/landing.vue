@@ -1,0 +1,29 @@
+<template>
+  <div class="min-h-screen flex flex-col justify-center">
+    <div class="container mx-auto text-center">
+      <h1 class="text-5xl font-bold text-primary-600 tracking-wide">Cue Sync Pro</h1>
+      <h2 class="text-2xl">Easy Hotcue Migration Tool</h2>
+      <p class="mt-2 text-xl">Synchronize cues between Algoriddim Djay, Serato DJ Lite/Pro and Virtual DJ.</p>
+      <p class="mt-6">
+        Do you want to try out a different DJ Software without leaving your cues behind? <br>
+        <span class="text-primary-600 font-semibold">Cue Sync Pro</span> is here to help.
+      </p>
+      <p class="mt-4">
+        Supported conversions at the moment:
+        <ul class="text-left w-48 mx-auto list-inside list-disc">
+          <li>Djay Pro to Serato</li>
+          <li>Djay Pro to Virtual DJ</li>
+        </ul>
+      </p>
+      <p class="mt-4">Available for Microsoft Windows now &mdash; Mac OS X coming soon.</p>
+      <p class="mt-2 text-sm">Note: You need to own identical digital copies for tracks from streaming services such as Spotify.</p>
+    </div>
+  </div>
+</template>
+
+<script lang="ts">
+import Vue from 'vue'
+
+export default Vue.extend({
+})
+</script>
