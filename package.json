@@ -7,6 +7,7 @@
     "dev": "node .electron-nuxt/check-engines.js && cross-env-shell NODE_ENV=development node .electron-nuxt/index.js",
     "build": "node .electron-nuxt/check-engines.js && cross-env-shell NODE_ENV=production node .electron-nuxt/index.js",
     "docs": "cross-env NODE_ENV=production postcss --config docs docs/main.css -o docs/main.min.css",
+    "heroku-postbuild": "npm run docs",
     "test": "jest",
     "preinstall": "node .electron-nuxt/check-engines.js",
     "postinstall": "electron-builder install-app-deps"
