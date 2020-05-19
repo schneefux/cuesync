@@ -1,7 +1,7 @@
 const path = require('path')
 
 module.exports = {
-  mode: 'universal',
+  mode: 'spa',
   head: {
     title: 'vue'
   },
