@@ -147,6 +147,10 @@ export default Vue.extend({
       this.$set(this.selections, index, !this.selections[index])
     },
   },
+  mounted() {
+    // data() selects all by default -> make sure parent is in sync with that
+    this.$emit('selections', this.selections)
+  },
   watch: {
     tracks() {
       // select all by default
