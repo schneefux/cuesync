@@ -16,7 +16,7 @@ test('should deserialize track info', () => {
 
 test.skip('should deserialize empty cues', () => {
   const trackInfo = serializer.deserialize({ key: testTrack.key, value: { 'song.cuePoints': [ 0, 12.34, 0, 34.56, 0, 0, 0, 0 ] } })
-  expect(trackInfo.cues.length).toBe(4)
+  expect(trackInfo.cues!.length).toBe(4)
 })
 
 test('should serialize track info', () => {

@@ -35,7 +35,7 @@ import * as fs from 'fs'
 import SeratoLibraryManager from '../../../lib/serato/SeratoLibraryManager'
 import TrackInfo from '../../../lib/model/TrackInfo'
 import TrackTable from '@/components/TrackTable.vue'
-import SeratoCrateReader from '../../../lib/serato/SeratoCrateReader'
+import * as crateReader from '@schneefux/parserato/dist/crate'
 
 export default Vue.extend({
   components: {
@@ -52,10 +52,9 @@ export default Vue.extend({
   async created() {
     this.tracks = []
 
-    const reader = new SeratoCrateReader()
-    const roots = await reader.listRoots()
+    const roots = await crateReader.listRoots()
     for (const root of roots) {
-      const crates = await reader.listCrates(root)
+      const crates = await crateReader.listCrates(root)
       for (const crate of crates) {
         const library = new SeratoLibraryManager(crate)
         try {

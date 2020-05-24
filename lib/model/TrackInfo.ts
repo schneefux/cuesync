@@ -1,18 +1,5 @@
-import Cue from "./Cue";
+import ParseratoTrackInfo from '@schneefux/parserato/dist/track/TrackInfo'
 
-export default interface TrackInfo {
-  title?: string
-  album?: string
-  artists?: string[]
-  cues?: Cue[]
-  bpm?: number
-  bpmLock?: boolean
-  color?: string
-  durationSeconds?: number
+export default interface TrackInfo extends ParseratoTrackInfo {
   songStart?: number
-  path?: string
-  filename?: string
-  isrc?: string
-  key?: string
-  genre?: string
 }
