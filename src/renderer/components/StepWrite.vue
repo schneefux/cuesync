@@ -14,7 +14,7 @@
       <button class="mt-2 button uppercase" @click="write()">sync!</button>
     </template>
     <template v-else>
-      <p v-if="loading">Processing...</p>
+      <p v-if="loading">Processing... {{ Math.floor(this.progress * 100) }}%</p>
     </template>
   </div>
 </template>
@@ -38,13 +38,17 @@ export default Vue.extend({
   data() {
     return {
       loading: false,
+      progress: 0,
     }
   },
   methods: {
     async write() {
+      this.loading = true
+
       const seratoLibrary = new SeratoLibraryManager('')
       for (const track of this.tracks) {
         await seratoLibrary.update(track)
+        this.progress += 1.0/this.tracks.length
       }
 
       this.$emit('next')
