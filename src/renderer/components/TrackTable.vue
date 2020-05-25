@@ -25,6 +25,9 @@
         </tr>
       </thead>
       <tbody>
+        <tr v-if="tracks.length == 0" class="w-full text-center">
+          <td class="py-2" :colspan="(checkable && tracks.length > 0) + columns.length">No tracks</td>
+        </tr>
         <tr
           v-for="(track, index) in tracks"
           v-show="visible[index]"
@@ -176,7 +179,7 @@ th {
   @apply sticky top-0 bg-background-700 py-1;
 }
 
-tbody tr {
+tbody tr:not(:last-child) {
   @apply border-b border-background-400;
 }
 
