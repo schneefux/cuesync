@@ -54,6 +54,7 @@ import Vue, { PropType } from 'vue'
 import TrackInfo from '../../../lib/model/TrackInfo'
 import TrackTable from '@/components/TrackTable.vue'
 import { fuzzyTrackInfoCandidate, fuzzyTrackInfoEqual } from '../../../lib/compare'
+import { calculateChanges } from '../../../lib/merge'
 
 export default Vue.extend({
   components: {
@@ -100,11 +101,7 @@ export default Vue.extend({
       this.matchedDjayTracks.push(this.djayTrack)
       this.matchedSeratoTracks.push(this.seratoTrack)
 
-      this.matches.push({
-        ...this.djayTrack,
-        ...this.seratoTrack,
-        cues: this.djayTrack.cues,
-      })
+      this.matches.push(calculateChanges(this.djayTrack, this.seratoTrack).changes)
 
       this.djayTrack = null
       this.seratoTrack = null

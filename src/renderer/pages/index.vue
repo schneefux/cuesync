@@ -33,37 +33,37 @@
 
         <step-match-sure
           v-if="step == 3" :tracks="sureMatches"
-          @next="tracks => { tracksToWrite = tracksToWrite.concat(tracks); step++ }">
+          @next="tracks => { changesToWrite = changesToWrite.concat(tracks); step++ }">
         </step-match-sure>
 
         <step-match-overwriting
           v-if="step == 4"
           :tracks="overwritingSureMatches"
-          @next="tracks => { tracksToWrite = tracksToWrite.concat(tracks); step++ }">
+          @next="tracks => { changesToWrite = changesToWrite.concat(tracks); step++ }">
         </step-match-overwriting>
 
         <step-match-manual
           v-if="step == 5"
           :tracks="unsureMatches"
           :serato-tracks="seratoTracks"
-          @next="tracks => { tracksToWrite = tracksToWrite.concat(tracks); step++ }">
+          @next="tracks => { changesToWrite = changesToWrite.concat(tracks); step++ }">
         </step-match-manual>
 
         <step-license
           v-if="step == 6"
-          :tracks="tracksToWrite"
-          @next="tracks => { tracksToWrite = tracks; step++ }">
+          :tracks="changesToWrite"
+          @next="tracks => { changesToWrite = tracks; step++ }">
         </step-license>
 
         <step-write
           v-if="step == 7"
-          :tracks="tracksToWrite"
+          :tracks="changesToWrite"
           @next="step++">
         </step-write>
 
         <step-done
           v-if="step == 8"
-          :tracks="tracksToWrite"
+          :tracks="changesToWrite"
           @next="close()">
         </step-done>
       </div>
@@ -75,6 +75,7 @@
 import Vue from 'vue'
 import * as electron from 'electron'
 import TrackInfo from '../../../lib/model/TrackInfo'
+import { calculateChanges } from '../../../lib/merge'
 import StepperHeader from '@/components/StepperHeader.vue'
 import StepIntro from '@/components/StepIntro.vue'
 import StepDjay from '@/components/StepDjay.vue'
@@ -108,28 +109,23 @@ export default Vue.extend({
       sureMatches: [] as TrackInfo[],
       overwritingSureMatches: [] as TrackInfo[],
       unsureMatches: [] as TrackInfo[],
-      tracksToWrite: [] as TrackInfo[],
+      changesToWrite: [] as TrackInfo[],
     }
   },
   methods: {
     match() {
-      this.djayTracks.forEach(source => {
+      this.djayTracks.forEach((source: TrackInfo) => {
         let anyMatch = false
-        this.seratoTracks.forEach(target => {
-          if (fuzzyTrackInfoEqual(source, target)) {
-            const t = {
-              ...source,
-              ...target,
-              cues: source.cues,
-            }
+        this.seratoTracks.forEach((target: TrackInfo) => {
+          if (fuzzyTrackInfoEqual(source, target) && fuzzyTrackInfoCandidate(source, target)) {
+            anyMatch = true
 
-            if (fuzzyTrackInfoCandidate(source, target)) {
-              anyMatch = true
-              if (target.cues !== undefined && target.cues.length == 0) {
-                this.sureMatches.push(t)
-              } else {
-                this.overwritingSureMatches.push(t)
-              }
+            const { changes, overwriting } = calculateChanges(source, target)
+
+            if (!overwriting) {
+              this.sureMatches.push(changes)
+            } else {
+              this.overwritingSureMatches.push(changes)
             }
           }
         })
