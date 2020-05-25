@@ -25,6 +25,8 @@ import TrackInfo from '../../../lib/model/TrackInfo'
 import SeratoLibraryManager from '../../../lib/serato/SeratoLibraryManager'
 import TrackTable from '@/components/TrackTable.vue'
 
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms))
+
 export default Vue.extend({
   components: {
     TrackTable,
@@ -43,11 +45,15 @@ export default Vue.extend({
   },
   methods: {
     async write() {
+      const isTrial = localStorage.getItem('license') === null
       this.loading = true
 
       const seratoLibrary = new SeratoLibraryManager('')
       for (const track of this.tracks) {
         await seratoLibrary.update(track)
+        if (isTrial) {
+          await sleep(1000)
+        }
         this.progress += 1.0/this.tracks.length
       }
 
