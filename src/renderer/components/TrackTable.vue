@@ -146,19 +146,22 @@ export default Vue.extend({
     toggleCheck(index: number) {
       this.$set(this.selections, index, !this.selections[index])
     },
+    emitSelections() {
+      this.$emit('selections', this.tracks.filter((t, idx) => this.selections[idx]))
+    },
   },
   mounted() {
     // data() selects all by default -> make sure parent is in sync with that
-    this.$emit('selections', this.selections)
+    this.emitSelections()
   },
   watch: {
     tracks() {
       // select all by default
       this.selections = this.tracks.map(t => true)
-      this.$emit('selections', this.selections)
+      this.emitSelections()
     },
     selections() {
-      this.$emit('selections', this.tracks.filter((t, idx) => this.selections[idx]))
+      this.emitSelections()
     },
   },
 })
