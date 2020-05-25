@@ -1,7 +1,5 @@
 <template>
   <div class="h-screen flex flex-col items-center px-16 py-6">
-    <nuxt-link to="/landing">DEBUG</nuxt-link>
-
     <stepper-header
       :step="step"
       :headings="[
