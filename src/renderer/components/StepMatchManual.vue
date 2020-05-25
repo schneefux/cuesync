@@ -2,7 +2,7 @@
   <div class="flex flex-col items-center">
     <p>These Djay tracks could not be found in your Serato library.</p>
     <p>Click and assign tracks you wish to migrate.</p>
-    <p>⚠ Durations must match or cues will be shifted.</p>
+    <p>⚠ Durations must match or cues and beatgrids will be shifted.</p>
     <div class="mt-4 flex relative" style="height: calc(100vh - 20rem - 10rem);">
       <div class="overflow-auto mr-2" style="width: calc(50vw - 4.5rem);">
         <track-table

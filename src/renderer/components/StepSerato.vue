@@ -15,7 +15,7 @@
         <div class="overflow-auto mt-4" style="height: calc(100vh - 18rem); width: calc(100vw - 8rem);">
           <track-table
             :tracks="tracks"
-            :columns="['artists', 'album', 'title', 'cues', 'bpm']"
+            :columns="['artists', 'album', 'title', 'cues', 'beatgridMarkers']"
           ></track-table>
         </div>
 

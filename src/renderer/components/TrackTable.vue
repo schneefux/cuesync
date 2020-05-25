@@ -94,6 +94,7 @@ export default Vue.extend({
       headers: {
         'cues': 'Cues?',
         'bpm': 'BPM',
+        'beatgridMarkers': 'Beatgrid?',
         'bpmLock': 'BPM Locked?',
         'durationSeconds': 'duration',
         'isrc': 'ISRC',
@@ -104,6 +105,7 @@ export default Vue.extend({
         'cues': x => x == undefined ? '' : x.length > 0 ? '✔️' : '❌',
         'bpmLock': x => x == undefined ? '' : x == 'true' ? '✔️' : '❌',
         'bpm': x => x == undefined ? '' : Math.floor(x),
+        'beatgridMarkers': x => x == undefined ? '' : x.length > 1 ? '✔️' : '❌',
         'durationSeconds': x => x == undefined ? '' : formatTime(x),
         'songStart': x => x == undefined ? '' : formatTime(x),
       },
@@ -188,6 +190,7 @@ td:nth-child(n+2),th:nth-child(n+2) {
 }
 
 .col--cues, .head--cues,
+.col--beatgridMarkers, .head--beatgridMarkers,
 .col--bpm, .head--bpm,
 .col--duration, .head--duration,
 .col--songStart, .head--songStart {
@@ -216,5 +219,9 @@ th {
 
 .head--artists {
   @apply w-2/12;
+}
+
+.head--beatgridMarkers {
+  @apply w-16;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col items-center">
-    <p>These Djay tracks can be migrated, but Serato cues exist and will be overwritten.</p>
+    <p>These Djay tracks can be migrated, but Serato cues or custom beatgrids exist and will be overwritten.</p>
     <p>Uncheck tracks you do not want to migrate.</p>
     <div class="overflow-auto mt-4" style="height: calc(100vh - 20rem); width: calc(100vw - 8rem);">
       <track-table
