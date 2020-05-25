@@ -83,8 +83,14 @@ export default class SeratoLibraryManager implements LibraryManager {
    */
   async loadTrack(trackPath: string): Promise<TrackInfo> {
     const trackInfo = await parserato.track.read(trackPath) as TrackInfo
+
+    // songStart is determined by first beatgrid marker position
     if (trackInfo.beatgridMarkers !== undefined) {
       trackInfo.songStart = trackInfo.beatgridMarkers[0].position;
+    }
+    // if no title is set, use filename
+    if (trackInfo.title === undefined) {
+      trackInfo.title = trackInfo.filename
     }
 
     return trackInfo
