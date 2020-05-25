@@ -6,6 +6,10 @@
       have been synced from Djay Pro to Serato.
     </p>
     <p>Have fun mixing!</p>
+
+    <div class="mt-4">
+      <button class="button" @click="$emit('next')">close</button>
+    </div>
   </div>
 </template>
 

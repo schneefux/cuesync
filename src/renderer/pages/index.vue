@@ -63,7 +63,8 @@
 
         <step-done
           v-if="step == 8"
-          :tracks="tracksToWrite">
+          :tracks="tracksToWrite"
+          @next="close()">
         </step-done>
       </div>
     </div>
@@ -72,6 +73,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import * as electron from 'electron'
 import TrackInfo from '../../../lib/model/TrackInfo'
 import StepperHeader from '@/components/StepperHeader.vue'
 import StepIntro from '@/components/StepIntro.vue'
@@ -135,6 +137,10 @@ export default Vue.extend({
           this.unsureMatches.push(source)
         }
       })
+    },
+    close() {
+      const window = electron.remote.getCurrentWindow()
+      window.close()
     },
   },
 })
