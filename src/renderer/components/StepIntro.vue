@@ -8,6 +8,9 @@
     <p class="text-sm">
       It is not affiliated with, endorsed or supported by Serato or Algoriddim.
     </p>
+    <p>
+      Import your music in Serato first.
+    </p>
     <p class="font-bold tracking-wider">
       Create a backup before you proceed.
     </p>
