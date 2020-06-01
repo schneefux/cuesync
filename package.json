@@ -1,6 +1,6 @@
 {
   "name": "cuesync",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "",
   "main": "./dist/main/index.js",
   "scripts": {
@@ -39,6 +39,7 @@
     "electron": "^8.3.0",
     "electron-builder": "^22.5.1",
     "electron-debug": "^3.0.1",
+    "electron-updater": "^4.3.1",
     "glob": "^7.1.6",
     "jest": "^25.4.0",
     "node-loader": "^0.6.0",

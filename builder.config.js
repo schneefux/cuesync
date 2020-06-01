@@ -9,14 +9,12 @@ const windowsOS = {
 
   nsis: {
     differentialPackage: true
-  }
-}
+  },
 
-const linuxOS = {
-  linux: {
-    icon: ICONS_DIR,
-    target: 'deb'
-  }
+  publish: [{
+    provider: 'generic',
+    url: 'https://app.cuesync.pro',
+  }],
 }
 
 const macOS = {
@@ -67,6 +65,5 @@ module.exports = {
     }
   ],
   ...windowsOS,
-  ...linuxOS,
   ...macOS
 }
