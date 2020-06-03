@@ -15,6 +15,20 @@
       Create a backup before you proceed.
     </p>
 
+    <span class="absolute text-xs text-gray-500 bottom-0 right-0 mr-2 mb-1">v{{ version }}</span>
     <button class="mt-2 button" @click="$emit('next')">understood</button>
   </div>
 </template>
+
+<script lang="ts">
+import Vue from 'vue'
+import packageJson from '../../../package.json'
+
+export default Vue.extend({
+  data() {
+    return {
+      version: packageJson.version,
+    }
+  },
+})
+</script>
