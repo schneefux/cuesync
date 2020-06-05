@@ -3,6 +3,7 @@
 </template>
 
 <style>
+/* purgecss start ignore */
 ::-webkit-scrollbar {
   width: 8px; /* vertical scrollbars */
   height: 8px; /* horizontal scrollbars */
@@ -15,4 +16,5 @@
 ::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.7);
 }
+/* purgecss end ignore */
 </style>
