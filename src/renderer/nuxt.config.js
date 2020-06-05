@@ -3,7 +3,7 @@ const path = require('path')
 module.exports = {
   mode: 'spa',
   head: {
-    title: 'vue'
+    title: 'Cue Sync Pro'
   },
   loading: false,
   plugins: [
