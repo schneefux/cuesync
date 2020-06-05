@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "description": "",
   "main": "./dist/main/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/schneefux/cuesync"
+  },
   "scripts": {
     "dev": "node .electron-nuxt/check-engines.js && cross-env-shell NODE_ENV=development node .electron-nuxt/index.js",
     "build": "node .electron-nuxt/check-engines.js && cross-env-shell NODE_ENV=production node .electron-nuxt/index.js",

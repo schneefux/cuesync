@@ -9,12 +9,7 @@ const windowsOS = {
 
   nsis: {
     differentialPackage: true
-  },
-
-  publish: [{
-    provider: 'generic',
-    url: 'https://app.cuesync.pro',
-  }],
+  }
 }
 
 const macOS = {
