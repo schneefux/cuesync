@@ -35,7 +35,6 @@ const macOS = {
 }
 
 module.exports = {
-  asar: false,
   productName: 'Cue Sync Pro',
   appId: 'xyz.schneefux.cuesyncpro',
   artifactName: 'cuesyncpro-${version}.${ext}',
