@@ -1,6 +1,7 @@
 /* globals INCLUDE_RESOURCES_PATH */
 import { app } from 'electron'
 import { autoUpdater } from 'electron-updater'
+import log from 'electron-log'
 
 /**
  * Set `__resources` path to resources files in renderer process
@@ -16,6 +17,10 @@ app.on('window-all-closed', function () {
   // to stay active until the user quits explicitly with Cmd + Q
   if (process.platform !== 'darwin') app.quit()
 })
+
+autoUpdater.logger = log
+// override console.log etc.
+Object.assign(console, log.functions)
 
 app.on('ready', function()  {
   autoUpdater.checkForUpdatesAndNotify()
