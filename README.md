@@ -10,6 +10,12 @@ Installation
 
 The project is based on [electron-nuxt](https://github.com/michalzaq12/electron-nuxt).
 
+Debugging
+---
+
+Logs are in `%USERPROFILE%\AppData\Roaming\cuesync\logs\` (Windows) or `~/Library/Logs/cuesync` (Mac).
+See [electron-log](https://github.com/megahertz/electron-log) for details.
+
 Publishing
 ---
 
