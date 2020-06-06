@@ -7,5 +7,7 @@ node_js: "12"
 env:
   # https://travis-ci.community/t/timeout-after-build-finished-and-succeeded/1336/2
   - YARN_GPG=no
+before_install:
+  - echo "//npm.pkg.github.com/:_authToken=${GH_TOKEN}" >> .npmrc
 script:
   - yarn build --publish
