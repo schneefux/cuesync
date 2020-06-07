@@ -9,7 +9,6 @@
         'Sure Matches',
         'Overwriting Matches',
         'Manual Matches',
-        'License Verification',
         'Process',
         'Done',
       ]"></stepper-header>
@@ -49,20 +48,14 @@
           @next="tracks => { changesToWrite = changesToWrite.concat(tracks); step++ }">
         </step-match-manual>
 
-        <step-license
-          v-if="step == 6"
-          :tracks="changesToWrite"
-          @next="tracks => { changesToWrite = tracks; step++ }">
-        </step-license>
-
         <step-write
-          v-if="step == 7"
+          v-if="step == 6"
           :tracks="changesToWrite"
           @next="step++">
         </step-write>
 
         <step-done
-          v-if="step == 8"
+          v-if="step == 7"
           :tracks="changesToWrite"
           @next="close()">
         </step-done>
@@ -83,7 +76,6 @@ import StepSerato from '@/components/StepSerato.vue'
 import StepMatchSure from '@/components/StepMatchSure.vue'
 import StepMatchOverwriting from '@/components/StepMatchOverwriting.vue'
 import StepMatchManual from '@/components/StepMatchManual.vue'
-import StepLicense from '@/components/StepLicense.vue'
 import StepWrite from '@/components/StepWrite.vue'
 import StepDone from '@/components/StepDone.vue'
 import { fuzzyTrackInfoEqual, fuzzyTrackInfoCandidate } from '../../../lib/compare'
@@ -97,7 +89,6 @@ export default Vue.extend({
     StepMatchSure,
     StepMatchOverwriting,
     StepMatchManual,
-    StepLicense,
     StepWrite,
     StepDone,
   },
