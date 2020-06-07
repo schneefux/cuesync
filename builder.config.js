@@ -4,7 +4,8 @@ const windowsOS = {
   win: {
     icon: ICONS_DIR + 'win-icon.ico',
     publisherName: '',
-    target: 'nsis'
+    target: 'nsis',
+    verifyUpdateCodeSignature: false
   },
 
   nsis: {
