@@ -9,12 +9,12 @@
     class="text-white min-h-screen flex flex-col justify-center"
     style="background-image: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.8)), url('background.jpg'); background-size: cover;"
   >
-    <div class="container mx-auto text-center bg-background-700 py-8 bg-opacity-50">
+    <div class="container my-12 mx-auto text-center bg-background-700 py-8 bg-opacity-50">
       <h1 class="text-5xl font-bold text-primary-600 tracking-wide">Cue Sync Pro</h1>
       <h2 class="text-2xl">Easy Hotcue Migration Tool</h2>
       <p class="mt-2 text-xl">Synchronize cues between Algoriddim Djay, Serato DJ Lite/Pro and Virtual DJ.</p>
       <p class="mt-6">
-        Do you want to try out a different DJ Software without leaving your cues behind? <br>
+        Do you want to try out a different DJ Software without leaving cues and beatgrid settings behind? <br>
         <span class="text-primary-600 font-semibold">Cue Sync Pro</span> is here to help.
       </p>
       <p class="mt-4">
@@ -25,15 +25,81 @@
         </ul>
       </p>
       <p class="mt-4">
-        Available for Microsoft Windows now &mdash; Mac OS X coming soon.<br>
-        Convert up to 5 songs in the free trial.
+        Available for Microsoft Windows and Mac OS X.<br>
       </p>
-      <h3 class="mt-6 text-xl">How does it work?</h3>
+
+      <h2 class="text-2xl mt-4">Screenshots</h2>
+      <div class="mt-2 mx-8 overflow-auto">
+        <div class="w-full flex" style="height: 24rem">
+          <img src="img/demo-djay.png" class="inline mr-2">
+          <img src="img/demo-serato.png" class="inline mr-2">
+          <img src="img/demo-autosync.png" class="inline mr-2">
+          <img src="img/demo-manual.png" class="inline mr-2">
+          <img src="img/demo-ready.png" class="inline mr-2">
+          <img src="img/demo-processing.png" class="inline">
+          </div>
+      </div>
+
+      <h2 class="mt-6 text-2xl">Note: This is an unofficial tool.</h2>
+      <p class="mt-4">
+        Cue Sync Pro is not affiliated with, endorsed or supported by Serato or Algoriddim.<br>
+        It is not well-tested yet, expect bugs to mess up your file tags.<br>
+        <span class="font-bold">Create a backup of your music!</span><br>
+        Also, keep in mind that you need to own identical digital copies for tracks from streaming services such as Spotify.
+      </p>
+
+      <h2 class="text-2xl mt-4">How to install</h2>
+      <p class="mt-4">
+        <details>
+          <summary>Windows</summary>
+          <p class="mt-3">
+            <h3 class="text-xl">Step 1: Download and start the exe</h3>
+            <div class="my-6">
+              <a href="https://github.com/schneefux/cuesync/releases/latest" class="bg-primary-600 px-6 py-4 rounded-sm">Download</a>
+            </div>
+
+            <h3 class="text-xl mt-4 mb-2">Step 2: Confirm</h3>
+            If you are getting this warning, click "More Info" and select "Run anyway". <br>
+            The application is not signed because I cannot afford to pay $300 a year for a certificate. Sorry!
+            <img src="img/win-1.png" class="w-2/5 mx-auto mt-2">
+
+            <h3 class="text-xl mt-4 mb-2">Step 3: Done</h3>
+            <img src="img/mac-5.png" class="w-2/5 mx-auto">
+          </p>
+        </details>
+        <details>
+          <summary>Mac OS X</summary>
+          <p class="mt-3">
+            <h3 class="text-xl">Step 1: Download the dmg</h3>
+            <div class="my-6">
+              <a href="https://github.com/schneefux/cuesync/releases/latest" class="bg-primary-600 px-6 py-4 rounded-sm">Download</a>
+            </div>
+
+            <h3 class="text-xl mt-4 mb-2">Step 2: Install</h3>
+            <img src="img/mac-1.png" class="w-2/5 mx-auto">
+
+            <h3 class="text-xl mt-4 mb-2">Step 3: Open the Finder</h3>
+            <img src="img/mac-2.png" class="w-2/5 mx-auto">
+
+            <h3 class="text-xl mt-4 mb-2">Step 4: Command-Open</h3>
+            <img src="img/mac-3.png" class="w-2/5 mx-auto">
+
+            <h3 class="text-xl mt-4 mb-2">Step 5: Confirm</h3>
+            The application is not signed because I cannot afford to pay $100 a year to Apple. Sorry!
+            <img src="img/mac-4.png" class="w-2/5 mx-auto mt-2">
+
+            <h3 class="text-xl mt-4 mb-2">Step 6: Done</h3>
+            <img src="img/mac-5.png" class="w-2/5 mx-auto">
+          </p>
+        </details>
+      </p>
+
+      <h2 class="mt-6 text-2xl">How does it work?</h2>
       <p class="mt-2">
-        Cue Sync Pro tries to find the tracks in your Djay Pro library on your hard drive.<br>
-        It will read the cues from Djay's settings and write them to the file's ID3 tags for Serato and Virtual DJ to read.
+        Cue Sync Pro detects your Djay Pro library and your Serato crates.<br>
+        Then, it matches common tracks.<br>
+        It will read cues from Djay and write them to the file's ID3 tags where Serato and Virtual DJ can read them.
       </p>
-      <p class="mt-2">Note: You need to own identical digital copies for tracks from streaming services such as Spotify.</p>
     </div>
   </body>
 </html>
