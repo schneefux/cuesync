@@ -1,5 +1,5 @@
 /* globals INCLUDE_RESOURCES_PATH */
-import { app } from 'electron'
+import { app, dialog, shell } from 'electron'
 import { autoUpdater } from 'electron-updater'
 import log from 'electron-log'
 
@@ -24,6 +24,17 @@ Object.assign(console, log.functions)
 
 app.on('ready', function()  {
   autoUpdater.checkForUpdatesAndNotify()
+})
+
+autoUpdater.on('update-available', async function (info) {
+  const updateDialog = await dialog.showMessageBox({
+    type: 'info',
+    buttons: ['Download Update', 'No Thanks'],
+    message: `Version ${info.version} is available.`,
+  })
+  if (updateDialog.response == 0) {
+    shell.openExternal('https://cuesync.pro/update')
+  }
 })
 
 // Load here all startup windows
